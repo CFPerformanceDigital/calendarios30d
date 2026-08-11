@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0d0b08">
+<title>Calendário Studio CA · Cátia Allmeida · CF Performance Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0b08;--bg2:#161410;--bg3:#1e1b14;
+  --brd:rgba(255,255,255,.07);--brd2:rgba(255,255,255,.13);
+  --txt:#f5f0e8;--mut:#7a7060;--fnt:#3a3520;
+  --gld:#8a6f1e;--gld2:#c9a84c;--gldf:rgba(138,111,30,.12);
+  --pur:#7c3aed;--purf:rgba(124,58,237,.12);
+  --grn:#2d8a4e;--grnf:rgba(45,138,78,.12);
+  --pnk:#c2185b;--pnkf:rgba(194,24,91,.12);
+  --blu:#1565c0;--bluf:rgba(21,101,192,.12);
+  --amb:#e65100;--ambf:rgba(230,81,0,.12);
+  --r:12px;--rs:8px;
+}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6;min-height:100vh;-webkit-text-size-adjust:100%;padding-bottom:env(safe-area-inset-bottom)}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1.5rem;border-bottom:1px solid var(--brd);background:rgba(13,11,8,.96);backdrop-filter:blur(12px);position:sticky;top:0;z-index:99}
+.tbl a{display:flex;align-items:center;gap:.5rem;text-decoration:none}
+.tbl img{height:34px;width:auto;filter:drop-shadow(0 0 6px rgba(201,168,76,.35))}
+.tbl span{font-size:13px;font-weight:500;color:var(--gld2);letter-spacing:.02em}
+.tbr{font-size:11px;color:var(--mut)}
+.tbr a{color:var(--gld);text-decoration:none;font-weight:500}
+.tbr a:hover{color:var(--gld2)}
+
+.hero{max-width:880px;margin:0 auto;padding:2.5rem 1.5rem 1.25rem}
+.eyebrow{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gld);margin-bottom:.6rem;font-weight:500}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.75rem,5vw,2.8rem);line-height:1.15;margin-bottom:.45rem}
+.hero h1 em{font-style:italic;color:var(--gld2)}
+.hero p{font-size:13px;color:var(--mut);max-width:500px;line-height:1.65}
+.htags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.65rem}
+.htag{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid var(--brd2);color:var(--mut)}
+
+.stats{max-width:880px;margin:0 auto 1.25rem;padding:0 1.5rem}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--brd);border:1px solid var(--brd);border-radius:var(--r);overflow:hidden}
+.si{background:var(--bg2);padding:.85rem .6rem;text-align:center}
+.sv{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--gld2);display:block;line-height:1}
+.sl{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.07em;margin-top:.2rem;display:block}
+
+.prog{max-width:880px;margin:0 auto .7rem;padding:0 1.5rem}
+.ph{display:flex;justify-content:space-between;font-size:12px;color:var(--mut);margin-bottom:.3rem}
+.pp{color:var(--gld);font-weight:500}
+.pt{height:4px;background:var(--fnt);border-radius:2px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--gld),var(--gld2));border-radius:2px;transition:width .6s cubic-bezier(.4,0,.2,1);width:0%}
+
+.xprow{max-width:880px;margin:0 auto 1.75rem;padding:0 1.5rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.lvlb{background:var(--gldf);border:1px solid var(--gld);border-radius:var(--rs);padding:.3rem .75rem;font-size:11px;font-weight:500;color:var(--gld2);white-space:nowrap;flex-shrink:0}
+.xt{flex:1;min-width:80px;height:6px;background:var(--fnt);border-radius:3px;overflow:hidden}
+.xf{height:100%;background:linear-gradient(90deg,var(--pur),var(--gld2));border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1);width:0%}
+.xn{font-size:11px;color:var(--mut);white-space:nowrap;flex-shrink:0}
+
+.tabnav{max-width:880px;margin:0 auto;padding:0 1.5rem;border-bottom:1px solid var(--brd)}
+.tabrow{display:flex;overflow-x:auto;scrollbar-width:none}
+.tabrow::-webkit-scrollbar{display:none}
+.tbtn{font-family:'DM Sans',sans-serif;font-size:12px;padding:.6rem .9rem;border:none;background:transparent;color:var(--mut);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;flex-shrink:0}
+.tbtn.on{color:var(--gld2);border-bottom-color:var(--gld);font-weight:500}
+.tbtn:hover{color:var(--txt)}
+
+.tpanel{display:none;max-width:880px;margin:0 auto;padding:1.5rem}
+.tpanel.on{display:block}
+
+.stitle{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--txt);margin-bottom:.9rem;padding-bottom:.45rem;border-bottom:1px solid var(--brd)}
+.sh3{font-size:11px;font-weight:500;color:var(--gld);text-transform:uppercase;letter-spacing:.09em;margin:.85rem 0 .3rem}
+.bp{font-size:13px;color:var(--mut);line-height:1.75;margin-bottom:.45rem}
+.acard{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:1rem 1.1rem;margin-bottom:.6rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.65rem}
+.gi{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:.75rem .95rem}
+.gi h4{font-size:11px;font-weight:500;color:var(--gld);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem}
+.gi ul{padding-left:1.1rem}
+.gi li,.gi p{font-size:12px;color:var(--mut);line-height:1.7}
+.pill{display:inline-block;font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px;margin:2px}
+.pg{background:var(--gldf);color:var(--gld2);border:1px solid rgba(201,168,76,.2)}
+.pp2{background:var(--purf);color:#a78bfa;border:1px solid rgba(124,58,237,.2)}
+.pc{background:var(--pnkf);color:#f472b6;border:1px solid rgba(194,24,91,.2)}
+.callout{background:var(--gldf);border:1px solid rgba(201,168,76,.2);border-radius:var(--r);padding:.85rem 1.1rem;font-size:13px;color:var(--gld2);line-height:1.65;margin:.65rem 0}
+.biobox{background:var(--bg3);border:1px solid var(--brd2);border-radius:var(--r);padding:.95rem 1.1rem;font-size:13px;color:var(--txt);line-height:1.9;font-style:italic;margin:.45rem 0}
+.objcard{background:var(--bg2);border:1px solid var(--brd);border-left:3px solid var(--pnk);border-radius:var(--r);padding:.75rem .95rem;margin-bottom:.45rem}
+.objcard h4{font-size:12px;font-weight:500;color:#f472b6;margin-bottom:.2rem}
+.objcard p{font-size:12px;color:var(--mut);line-height:1.65}
+.pilar{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:.8rem .95rem;margin-bottom:.45rem;display:flex;gap:.7rem;align-items:flex-start}
+.pico{font-size:1.1rem;flex-shrink:0;margin-top:.1rem}
+.pilar h4{font-size:13px;font-weight:500;color:var(--txt);margin-bottom:.15rem}
+.pilar p{font-size:12px;color:var(--mut);line-height:1.6}
+.fmtg{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-bottom:.55rem}
+.fcard{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--rs);padding:.65rem .85rem}
+.fcard h5{font-size:11px;font-weight:500;color:var(--gld);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.2rem}
+.fcard p{font-size:11px;color:var(--mut);line-height:1.55}
+
+.filts{max-width:880px;margin:0 auto .7rem;padding:0 1.5rem;display:flex;gap:5px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.filts::-webkit-scrollbar{display:none}
+.fbtn{font-size:11px;font-family:'DM Sans',sans-serif;padding:4px 11px;border-radius:20px;border:1px solid var(--brd2);background:transparent;color:var(--mut);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.fbtn:hover{border-color:var(--gld);color:var(--gld)}
+.fbtn.on{background:var(--gldf);border-color:var(--gld);color:var(--gld2);font-weight:500}
+
+.wblk{max-width:880px;margin:0 auto 1.4rem;padding:0 1.5rem}
+.wtitle{font-family:'DM Serif Display',serif;font-size:.92rem;color:var(--txt);margin-bottom:.65rem;padding-bottom:.4rem;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
+.wnum{font-size:10px;font-family:'DM Sans',sans-serif;color:var(--gld);background:var(--gldf);border:1px solid rgba(201,168,76,.2);padding:2px 8px;border-radius:20px;font-weight:500}
+.wcnt{font-size:11px;font-family:'DM Sans',sans-serif;color:var(--mut);margin-left:auto}
+
+.dcard{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);margin-bottom:.4rem;overflow:hidden;transition:border-color .2s,transform .15s}
+.dcard:hover{border-color:var(--brd2);transform:translateY(-1px)}
+.dcard.done{background:var(--bg3);border-color:rgba(45,138,78,.25)}
+.dcard.done .chead{opacity:.7}
+.chead{display:flex;align-items:center;gap:7px;padding:.7rem .95rem;cursor:pointer;user-select:none}
+.chk{width:23px;height:23px;border-radius:50%;border:1.5px solid var(--fnt);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;color:transparent;font-size:11px}
+.chk:hover{border-color:var(--grn)}
+.dcard.done .chk{background:var(--grn);border-color:var(--grn);color:#fff}
+.cinfo{flex:1;min-width:0}
+.cmeta{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:2px}
+.cnum{font-size:11px;font-weight:500;color:var(--mut);min-width:30px}
+.bdg{font-size:9px;font-weight:500;padding:2px 7px;border-radius:20px}
+.breel{background:var(--purf);color:#a78bfa}
+.bcarr{background:var(--pnkf);color:#f472b6}
+.best{background:var(--bluf);color:#60a5fa}
+.bat{background:rgba(21,101,192,.1);color:#60a5fa}
+.bnu{background:var(--grnf);color:#4ade80}
+.bco{background:var(--ambf);color:#fb923c}
+.cgancho{font-size:13px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:460px}
+.dcard.done .cgancho{text-decoration:line-through;color:var(--mut)}
+.chevron{color:var(--mut);font-size:15px;flex-shrink:0;transition:transform .25s;line-height:1}
+.dcard.open .chevron{transform:rotate(180deg)}
+.cbody{display:none;padding:0 .95rem .95rem;border-top:1px solid var(--brd)}
+.dcard.open .cbody{display:block}
+.csec{margin-top:.7rem}
+.clbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--gld);font-weight:500;margin-bottom:.18rem}
+.ctxt{font-size:12.5px;color:var(--mut);line-height:1.65}
+.ctxt.gs{font-size:13px;color:var(--txt);font-family:'DM Serif Display',serif;font-style:italic}
+.leg{background:var(--bg3);border:1px solid var(--brd);border-radius:var(--rs);padding:.55rem .8rem;font-size:12px;color:var(--mut);line-height:1.8;margin-top:.18rem;white-space:pre-line}
+.ctapill{display:inline-block;margin-top:.5rem;font-size:11px;font-weight:500;color:var(--gld2);background:var(--gldf);border:1px solid rgba(201,168,76,.25);border-radius:20px;padding:3px 10px}
+.vis{border-left:2px solid var(--fnt);padding-left:.55rem;font-size:12px;color:var(--mut);margin-top:.18rem;line-height:1.6}
+
+.achsec{max-width:880px;margin:0 auto;padding:0}
+.achh{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--txt);margin-bottom:.7rem}
+.achgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.45rem}
+.achcard{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--rs);padding:.6rem .75rem;text-align:center;transition:border-color .2s}
+.achcard.un{border-color:rgba(201,168,76,.35);background:var(--gldf)}
+.achico{font-size:1.3rem;display:block;margin-bottom:.22rem;filter:grayscale(1);opacity:.22}
+.achcard.un .achico{filter:none;opacity:1}
+.achnm{font-size:10px;font-weight:500;color:var(--mut)}
+.achcard.un .achnm{color:var(--gld2)}
+.achdesc{font-size:9px;color:var(--fnt);margin-top:2px}
+.achcard.un .achdesc{color:var(--mut)}
+
+.toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--bg2);border:1px solid var(--gld);border-radius:var(--r);padding:.8rem 1rem;font-size:12px;color:var(--txt);box-shadow:0 8px 32px rgba(0,0,0,.5);transform:translateY(140%);transition:transform .4s cubic-bezier(.4,0,.2,1);z-index:200;max-width:250px}
+.toast.show{transform:translateY(0)}
+.tttl{font-weight:500;color:var(--gld2);font-size:11px;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
+
+.footer{text-align:center;padding:2rem 1.5rem 3rem;border-top:1px solid var(--brd);max-width:880px;margin:0 auto}
+.flogo{height:52px;width:auto;opacity:.9;filter:drop-shadow(0 0 10px rgba(201,168,76,.3));display:block;margin:0 auto;transition:filter .2s}
+.flogo:hover{filter:drop-shadow(0 0 18px rgba(201,168,76,.6))}
+.fcr{font-size:12px;color:var(--mut);margin-top:.55rem}
+.fcr a{color:var(--gld);text-decoration:none;font-weight:500}
+.fcr a:hover{color:var(--gld2)}
+.fnote{font-size:10px;color:var(--fnt);margin-top:.3rem}
+
+@media(max-width:768px){.sgrid{grid-template-columns:repeat(2,1fr)}.g2,.fmtg{grid-template-columns:1fr}}
+@media(max-width:480px){
+  .hero,.stats,.prog,.xprow,.tabnav,.tpanel,.filts,.wblk,.achsec{padding-left:1rem;padding-right:1rem}
+  .hero h1{font-size:1.55rem}.sv{font-size:1.4rem}
+  .cgancho{max-width:calc(100vw - 115px);white-space:normal;font-size:12px}
+  .xprow{gap:.35rem}.lvlb{font-size:10px;width:100%;text-align:center}
+  .xn{width:100%;text-align:right;font-size:10px}.xt{width:100%;order:3}
+  .achgrid{grid-template-columns:repeat(2,1fr)}
+  .toast{right:.75rem;left:.75rem;max-width:none}
+}
+@media(max-width:360px){.hero h1{font-size:1.3rem}.sv{font-size:1.2rem}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="tbl">
+    <a href="https://www.instagram.com/carolfilippeof" target="_blank">
+      <img src="data:image/png;base64,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" alt="CF Performance Digital">
+      <span>CF Performance Digital</span>
+    </a>
+  </div>
+  <div class="tbr">CF Performance Digital &middot; <a href="https://www.instagram.com/carolfilippeof" target="_blank">@carolfilippeof</a></div>
+</header>
+
+<div class="hero">
+  <p class="eyebrow">Plano Editorial Estratégico · Agosto 2026</p>
+  <h1>Studio CA<br><em>Cátia Allmeida</em></h1>
+  <p>Personal exclusiva para mulheres · Newark, NJ · Diagnóstico completo + 30 dias de conteúdo estratégico.</p>
+  <div class="htags">
+    <span class="htag">Studio exclusivo mulheres</span>
+    <span class="htag">Newark · NJ</span>
+    <span class="htag">Musculação + Funcional</span>
+    <span class="htag">4.294 seguidores</span>
+    <span class="htag">Online + Presencial</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="sgrid">
+    <div class="si"><span class="sv" id="sd">0</span><span class="sl">Publicados</span></div>
+    <div class="si"><span class="sv" id="sl">30</span><span class="sl">Restantes</span></div>
+    <div class="si"><span class="sv" id="sx">0</span><span class="sl">XP</span></div>
+    <div class="si"><span class="sv" id="ss">0</span><span class="sl">Sequência</span></div>
+  </div>
+</div>
+
+<div class="prog">
+  <div class="ph"><span>Progresso do calendário</span><span class="pp" id="pct">0%</span></div>
+  <div class="pt"><div class="pf" id="pfi"></div></div>
+</div>
+
+<div class="xprow">
+  <div class="lvlb" id="lvlb">Nível 1 · Iniciante</div>
+  <div class="xt"><div class="xf" id="xfi"></div></div>
+  <div class="xn" id="xn">0 / 100 XP</div>
+</div>
+
+<nav class="tabnav">
+  <div class="tabrow">
+    <button class="tbtn on" onclick="goTab('diag',this)">📊 Diagnóstico</button>
+    <button class="tbtn" onclick="goTab('pos',this)">🎯 Posicionamento</button>
+    <button class="tbtn" onclick="goTab('ed',this)">✏️ Editorial</button>
+    <button class="tbtn" onclick="goTab('cal',this)">📅 Calendário</button>
+    <button class="tbtn" onclick="goTab('ach',this)">🏆 Conquistas</button>
+  </div>
+</nav>
+
+<!-- ══ DIAGNÓSTICO ══ -->
+<div id="tp-diag" class="tpanel on">
+  <p class="stitle">🔬 PARTE 1 — Diagnóstico Brutal do Perfil</p>
+
+  <div class="acard">
+    <p class="sh3">1. Posicionamento Atual</p>
+    <p class="bp">O perfil da Cátia comunica energia, autenticidade e diversão — o que é um ativo real. A Cátia aparece, interage, faz trends com as alunas e isso gera simpatia genuína. Porém o posicionamento está <strong>disperso</strong>: o Instagram mistura vida pessoal, bastidores de treino, posts de copa do mundo, eventos comunitários e divulgação do studio sem uma linha editorial que construa autoridade clara. O resultado é uma percepção de <em>personal animada e próxima</em> — mas não de <em>especialista premium que resolve um problema específico</em>.</p>
+    <p class="bp">A bio falha em comunicar o diferencial mais poderoso do Studio CA: é o único espaço exclusivamente feminino na região com personal trilíngue. Isso está enterrado — quando deveria ser o primeiro gancho.</p>
+  </div>
+
+  <div class="acard">
+    <p class="sh3">2. Pontos Críticos de Bloqueio</p>
+    <ul style="padding-left:1.1rem;font-size:13px;color:var(--mut);line-height:2.1">
+      <li><strong style="color:#f472b6">Bio sem diferencial claro:</strong> "Ajudo mulheres a se sentirem confiantes" é verdade mas não é específico o suficiente para parar o scroll e gerar clique.</li>
+      <li><strong style="color:#f472b6">Conteúdo sem funil:</strong> posts de vida pessoal, eventos e trends sem estratégia de topo→meio→fundo de funil. Quem chega no perfil não sabe qual o próximo passo.</li>
+      <li><strong style="color:#f472b6">Oferta invisível:</strong> o plano mensal de USD 280 e a plataforma online não aparecem com frequência estratégica. Ninguém compra o que não sabe o preço e o processo.</li>
+      <li><strong style="color:#f472b6">Diferencial geográfico e linguístico não explorado:</strong> ser trilíngue em Newark é ouro — e quase não aparece no conteúdo.</li>
+      <li><strong style="color:#f472b6">Prova social sem estrutura narrativa:</strong> depoimentos existem mas sem contexto emocional, tempo de resultado e jornada da aluna.</li>
+    </ul>
+  </div>
+
+  <p class="sh3">3. Dores Visíveis do Público</p>
+  <div class="g2">
+    <div class="gi"><h4>Dores declaradas</h4><ul>
+      <li>Vergonha de treinar em academia cheia</li>
+      <li>Não saber fazer os exercícios corretamente</li>
+      <li>Não ver resultado mesmo se esforçando</li>
+      <li>Falta de atenção individualizada no treino</li>
+      <li>Dificuldade de comunicação em inglês com instrutores</li>
+    </ul></div>
+    <div class="gi"><h4>Comportamentos observados</h4><ul>
+      <li>Desistência após 2–3 semanas de academia</li>
+      <li>Medo de fazer errado e se machucar</li>
+      <li>Comparação com outras mulheres no ambiente de treino</li>
+      <li>Busca por ambiente seguro e sem julgamento</li>
+      <li>Necessidade de ser vista e acompanhada</li>
+    </ul></div>
+  </div>
+
+  <p class="sh3">4. Dores Ocultas (não verbalizadas)</p>
+  <div class="g2">
+    <div class="gi"><ul>
+      <li>Vergonha do próprio corpo que impede de começar</li>
+      <li>Medo de investir e desistir novamente</li>
+      <li>Sensação de que "não é pra mim" — corpo, idade, condicionamento</li>
+      <li>Isolamento social de imigrante que a academia poderia aliviar</li>
+    </ul></div>
+    <div class="gi"><ul>
+      <li>Pressão cultural para ter certo tipo de corpo</li>
+      <li>Culpa por não estar cuidando da saúde</li>
+      <li>Medo de treinar errado sem perceber (lesão silenciosa)</li>
+      <li>Insegurança com o idioma em ambientes fitness</li>
+    </ul></div>
+  </div>
+
+  <p class="sh3">5. Desejos Emocionais</p>
+  <div style="margin:.4rem 0 .7rem">
+    <span class="pill pg">Sentir-se confiante no próprio corpo</span>
+    <span class="pill pg">Pertencer a uma comunidade</span>
+    <span class="pill pg">Ser vista e acompanhada individualmente</span>
+    <span class="pill pg">Superar a vergonha de começar</span>
+    <span class="pill pg">Sentir que está fazendo certo</span>
+    <span class="pill pg">Ter energia e disposição no dia a dia</span>
+  </div>
+
+  <p class="sh3">6. Desejos Práticos</p>
+  <div style="margin:.4rem 0 .7rem">
+    <span class="pill pp2">Emagrecer com consistência</span>
+    <span class="pill pp2">Ganhar massa muscular e definição</span>
+    <span class="pill pp2">Não se machucar no treino</span>
+    <span class="pill pp2">Treinar 3x/semana e ver resultado</span>
+    <span class="pill pp2">Ambiente feminino e seguro</span>
+    <span class="pill pp2">Comunicação no próprio idioma</span>
+  </div>
+
+  <p class="sh3">7. Objeções que Travam a Compra</p>
+  <div class="objcard"><h4>1. "USD 280 é caro para mim"</h4><p>O preço não foi contextualizado. Qual é o custo de continuar sedentária? Qual é o custo de academia convencional que não funciona? A âncora precisa ser reposicionada: USD 280 por atenção individual, ambiente exclusivo, personal trilíngue e comunidade real.</p></div>
+  <div class="objcard"><h4>2. "Já tentei academia e não funcionou"</h4><p>Experiência anterior negativa em ambiente genérico. A diferença do Studio CA precisa estar visível antes do contato — ambiente exclusivo, atenção individual, método adaptado para a mulher real.</p></div>
+  <div class="objcard"><h4>3. "Não tenho tempo"</h4><p>Objeção real mas superável. 3x por semana é o suficiente para resultado. O conteúdo precisa mostrar isso com exemplos reais de alunas com rotina cheia que conseguem.</p></div>
+  <div class="objcard"><h4>4. "Tenho vergonha de aparecer assim"</h4><p>A dor mais silenciosa e mais poderosa. A comunicação precisa mostrar que o Studio CA é exatamente o lugar para quem tem essa vergonha — e que ela passa após a primeira semana.</p></div>
+  <div class="objcard"><h4>5. "Não sei se funciona para a minha idade"</h4><p>Público 40–75 tem muito medo de "estar tarde". O conteúdo precisa desmistificar com exemplos concretos de alunas nessas faixas etárias com resultados documentados.</p></div>
+
+  <div class="acard" style="margin-top:.7rem">
+    <p class="sh3">8. Oportunidade de Mercado</p>
+    <p class="bp">Em Newark e arredores, <strong>não existe outro studio exclusivamente feminino com personal trilíngue</strong>. Esse é um território completamente livre. A comunidade brasileira, latina e americana que mora na região tem uma necessidade não atendida: treinar em português em ambiente exclusivamente feminino com personal certificada internacionalmente.</p>
+    <p class="bp">A plataforma online expande esse território para o mundo: qualquer brasileira nos EUA que não mora em Newark pode treinar com a Cátia. Esse é um mercado sub-explorado de altíssimo potencial.</p>
+  </div>
+</div>
+
+<!-- ══ POSICIONAMENTO ══ -->
+<div id="tp-pos" class="tpanel">
+  <p class="stitle">🎯 PARTE 2 — Novo Posicionamento de Marca</p>
+
+  <div class="acard">
+    <p class="sh3">1. Novo Posicionamento</p>
+    <p class="bp"><strong style="color:var(--gld2)">Território único:</strong> O único studio exclusivo para mulheres em Newark, NJ, com personal trilíngue, certificação internacional e 7 anos de experiência com o corpo feminino nos EUA. O Studio CA não é academia. É o lugar onde mulheres de 25 a 75 anos treinam com atenção, resultado e comunidade real.</p>
+    <div class="callout"><strong>Frase de posicionamento:</strong><br><br>
+    <span style="font-family:'DM Serif Display',serif;font-size:1.1rem;font-style:italic">"Aqui você treina com quem entende o seu corpo — e fala a sua língua."</span></div>
+  </div>
+
+  <div class="acard">
+    <p class="sh3">2. Nova Bio Estratégica</p>
+    <div class="biobox">
+      Personal certificada para mulheres 🏋🏾‍♀️ · 7 anos nos EUA<br>
+      Studio exclusivo feminino em Newark, NJ<br>
+      Musculação · Funcional · Resultados reais<br>
+      Do shape ao autoconhecimento — sem julgamento<br>
+      🇧🇷🇺🇸🇪🇸 PT · EN · ES<br>
+      📍 Newark, NJ · Online para todo EUA<br>
+      👇 Garanta sua vaga
+    </div>
+    <p class="bp" style="font-size:11px;margin-top:.35rem">Mudanças: trilinguismo em destaque, localização clara, público e serviço específicos, CTA direto. Removida a frase genérica de "ajudo mulheres a se sentirem confiantes".</p>
+  </div>
+
+  <p class="sh3">3. Tom de Voz por Formato</p>
+  <div class="fmtg">
+    <div class="fcard"><h5>🎬 Reels</h5><p>Energético, próximo e autêntico. Mostrar a Cátia real — animada, divertida, mas especialista. Ganchos diretos nos 2 primeiros segundos. Máximo 15s.</p></div>
+    <div class="fcard"><h5>🖼️ Carrossel</h5><p>Educativo e estruturado. Tom de "deixa eu te explicar o que ninguém te contou sobre o seu corpo". Até 10 slides com linguagem acessível.</p></div>
+    <div class="fcard"><h5>📌 Estático</h5><p>Impacto imediato. Frases de alto compartilhamento ou apresentação do studio e oferta. Visual premium e acolhedor.</p></div>
+    <div class="fcard"><h5>📱 Stories</h5><p>Bastidores reais, dia a dia, alunas treinando, trends, humanização. É onde a Cátia pode ser 100% ela mesma.</p></div>
+  </div>
+
+  <div class="acard" style="margin-top:.5rem">
+    <p class="sh3">4. Arquétipo de Marca</p>
+    <p class="bp"><strong style="color:var(--gld2)">Herói + Cuidador</strong> — O Herói porque a Cátia superou seus próprios desafios e ajuda mulheres a superarem os delas; o Cuidador porque o Studio CA é um espaço de acolhimento, segurança e atenção individual que vai além do treino.</p>
+    <p class="bp"><strong>Como aplicar:</strong> mostrar a jornada real da Cátia nos EUA (Herói) e os bastidores do cuidado com cada aluna (Cuidador). Isso cria conexão emocional que diferencia do personal que apenas "entrega treino".</p>
+  </div>
+
+  <div class="callout" style="margin-top:.5rem">
+    <strong>Meta Mensal — Agosto/Setembro 2026:</strong><br>
+    Seguidores: 4.294 → <strong>5.500+</strong> (orgânico + tráfego pago) ·
+    Novas alunas presenciais: <strong>4–6</strong> ·
+    Novas alunas online: <strong>3–5</strong> ·
+    Faturamento projetado: <strong>USD 1.960 – USD 3.080/mês</strong>
+  </div>
+</div>
+
+<!-- ══ EDITORIAL ══ -->
+<div id="tp-ed" class="tpanel">
+  <p class="stitle">✏️ PARTE 3 — Linha Editorial e Comunicação</p>
+
+  <p class="sh3">1. Pilares de Conteúdo</p>
+  <div class="pilar"><div class="pico">🏋🏾‍♀️</div><div><h4>Pilar 1 — Treino e Resultado</h4><p>Mostrar exercícios, progressão de carga, alunas em ação e resultados reais. Conteúdo que prova que o método funciona. Objetivo: autoridade e prova social.</p></div></div>
+  <div class="pilar"><div class="pico">💜</div><div><h4>Pilar 2 — Comunidade e Pertencimento</h4><p>Trends com alunas, bastidores do studio, celebrações, depoimentos. Mostrar que o Studio CA é mais que treino — é comunidade. Objetivo: engajamento e desejo.</p></div></div>
+  <div class="pilar"><div class="pico">📚</div><div><h4>Pilar 3 — Educação Fitness</h4><p>Desmistificar mitos sobre treino feminino, idade, peso e saúde. Explicar com simplicidade o que funciona e por quê. Objetivo: autoridade e salvamentos.</p></div></div>
+  <div class="pilar"><div class="pico">🌎</div><div><h4>Pilar 4 — Vida de Brasileira nos EUA</h4><p>Conteúdo específico para a comunidade: desafios de adaptação, corpo sob estresse de imigração, saudade e saúde. Objetivo: identificação profunda e compartilhamento.</p></div></div>
+  <div class="pilar"><div class="pico">💊</div><div><h4>Pilar 5 — Saúde Feminina por Faixa Etária</h4><p>Conteúdo segmentado: mulher após 30, 40, 50, 60+. O que muda no corpo, como adaptar o treino, o que ganhar. Objetivo: captar público amplo com mensagem específica.</p></div></div>
+  <div class="pilar"><div class="pico">💰</div><div><h4>Pilar 6 — Oferta e Conversão</h4><p>Apresentar o plano mensal, a plataforma online, depoimentos estruturados e CTAs diretos. Não frequente demais, mas presente de forma estratégica. Objetivo: conversão.</p></div></div>
+
+  <p class="sh3" style="margin-top:.9rem">2. Regras de Comunicação</p>
+  <div class="g2">
+    <div class="gi"><h4>✅ Sempre fazer</h4><ul>
+      <li>Mostrar alunas reais treinando (com permissão)</li>
+      <li>Aparecer pessoalmente — a Cátia É a marca</li>
+      <li>Falar em português (prioridade) mas marcar EN/ES quando relevante</li>
+      <li>CTA específico em todo conteúdo</li>
+      <li>Celebrar conquistas das alunas publicamente</li>
+      <li>Mostrar o studio como espaço acolhedor e premium</li>
+    </ul></div>
+    <div class="gi"><h4>❌ Nunca fazer</h4><ul>
+      <li>Posts sem intenção estratégica (só porque tem que postar)</li>
+      <li>Antes/depois sem contexto da jornada emocional</li>
+      <li>Conteúdo genérico de saúde sem especificidade do Studio CA</li>
+      <li>Ignorar comentários e directs por mais de 24h</li>
+      <li>Postar sobre política ou temas divisivos</li>
+      <li>Usar foto ou vídeo de aluna sem autorização expressa</li>
+    </ul></div>
+  </div>
+
+  <p class="sh3" style="margin-top:.7rem">3. Paleta de Sentimentos por Funil</p>
+  <div class="g2">
+    <div class="gi"><h4>🔝 Topo — Atrair</h4><p>Identificação · Reconhecimento da dor · "Ela está falando de mim" · Curiosidade · Leveza</p></div>
+    <div class="gi"><h4>⚡ Meio — Nutrir</h4><p>Esperança · Confiança crescente · Pertencimento · "Isso é possível pra mim" · Desejo</p></div>
+    <div class="gi"><h4>💰 Fundo — Converter</h4><p>Urgência suave · Segurança · "Agora é a hora" · Prova social · Clareza da oferta</p></div>
+    <div class="gi"><h4>🔁 Fidelização</h4><p>Orgulho · Comunidade · Conquista · Indicação natural · "Faz parte de mim"</p></div>
+  </div>
+</div>
+
+<!-- ══ CALENDÁRIO ══ -->
+<div id="tp-cal" class="tpanel">
+  <div class="filts">
+    <button class="fbtn on" onclick="filt('all',this)">Todos</button>
+    <button class="fbtn" onclick="filt('reel',this)">Reel</button>
+    <button class="fbtn" onclick="filt('carr',this)">Carrossel</button>
+    <button class="fbtn" onclick="filt('est',this)">Estático</button>
+    <button class="fbtn" onclick="filt('at',this)">Atrair</button>
+    <button class="fbtn" onclick="filt('nu',this)">Nutrir</button>
+    <button class="fbtn" onclick="filt('co',this)">Converter</button>
+    <button class="fbtn" onclick="filt('done',this)">✓ Feitos</button>
+    <button class="fbtn" onclick="filt('pend',this)">Pendentes</button>
+  </div>
+  <div id="calroot"></div>
+</div>
+
+<!-- ══ CONQUISTAS ══ -->
+<div id="tp-ach" class="tpanel">
+  <div class="achsec">
+    <p class="achh">Conquistas desbloqueáveis</p>
+    <div class="achgrid" id="achgrid"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <img src="data:image/png;base64,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" alt="CF Performance Digital" class="flogo">
+  <div class="fcr">Produzido por CF Performance Digital &middot; <a href="https://www.instagram.com/carolfilippeof" target="_blank">@carolfilippeof</a></div>
+  <div class="fnote">Todos os dados são salvos localmente no seu navegador · 2026</div>
+</footer>
+
+<div class="toast" id="toast">
+  <div class="tttl" id="tttl"></div>
+  <div id="tmsg"></div>
+</div>
+
+<script>
+
+var D=[
+  {id:1,wk:1,fmt:"reel",obj:"at",
+   g:"Você tem vergonha de treinar na academia? Me conta esse segredo.",
+   ob:"Identificação com dor da vergonha em academia cheia · topo de funil",
+   vi:"📱 Falar direto para câmera com expressão de cumplicidade. Cenário do studio vazio ou com pouquíssimas alunas. 10–13s.",
+   le:"A maioria das mulheres não para de treinar por falta de vontade.\n\nPara porque se sente julgada.\nPara porque tem vergonha de errar.\nPara porque não quer incomodar ninguém pedindo ajuda.\n\nAqui no Studio CA, isso não existe.\n\nSó mulheres. Só respeito. Só resultado.\n\nMe chama no direct se você se identificou.",
+   ct:"Comenta: qual foi a última vez que você desistiu de treinar por vergonha?"},
+
+  {id:2,wk:1,fmt:"carr",obj:"at",
+   g:"5 motivos pelos quais mulheres acima de 40 precisam de treino de força urgente",
+   ob:"Educação + identificação com público 40+ · alto salvamento",
+   vi:"📱 8 slides. Capa com número em destaque. Um motivo por slide com ilustração ou foto da Cátia em ação. Slide final CTA.",
+   le:"Depois dos 40, o corpo muda. Mas isso não significa que você precisa aceitar.\n\nSignifica que você precisa de uma estratégia certa — não de qualquer treino.\n\nSalva esse carrossel e mostra pra aquela amiga que ainda acha que musculação é coisa de jovem.",
+   ct:"Salva e marca uma amiga que precisa ver isso"},
+
+  {id:3,wk:1,fmt:"est",obj:"at",
+   g:"Studio só para mulheres em Newark, NJ. Sem julgamento. Sem fila. Sem desculpa.",
+   ob:"Apresentar o diferencial do studio · atrair público local",
+   vi:"📱 Foto do studio bem iluminado, limpo e organizado. Texto sobreposto elegante. Destaque para o ambiente acolhedor.",
+   le:"Cansada de academia lotada onde ninguém te ajuda?\n\nO Studio CA foi criado exatamente pra você.\n\nAmbiente exclusivo para mulheres, com personal trilíngue (português, inglês e espanhol), atenção individual em cada treino e comunidade que te apoia.\n\nVem conhecer.",
+   ct:"Me chama no direct: quero conhecer o Studio CA"},
+
+  {id:4,wk:1,fmt:"reel",obj:"at",
+   g:"Olha o antes e depois de quem falou que não tinha mais jeito.",
+   ob:"Prova social com transformação real · criar desejo",
+   vi:"📱 Mostrar transformação de aluna (com permissão). Split antes/depois ou progressão de vídeos. Narrar a história em 13s.",
+   le:"Ela me procurou dizendo que tinha desistido de ter um corpo diferente.\n\nHoje ela não falta um treino.\n\nO que mudou? O ambiente. A atenção. O método.\n\nQuando você treina num lugar que foi feito pra você, tudo muda.\n\nMe chama no direct se você quer começar.",
+   ct:"Direct: quero começar minha transformação"},
+
+  {id:5,wk:1,fmt:"carr",obj:"nu",
+   g:"O que acontece com o seu corpo quando você para de treinar por 2 semanas",
+   ob:"Educação sobre desuso muscular · gerar urgência de retorno",
+   vi:"📱 7 slides. Capa impactante. Explicação do processo por slide com linguagem simples e direta. Slide final: solução.",
+   le:"Esse carrossel me perguntam toda semana.\n\nA boa notícia: você não perdeu tudo.\nA notícia que vai te tirar da cama: perdeu mais do que imagina nos primeiros 14 dias.\n\nSalva esse post. Você vai querer compartilhar com a amiga que está na semana de descanso eterna.",
+   ct:"Salva e marca quem está 'de descanso' há 3 meses"},
+
+  {id:6,wk:1,fmt:"est",obj:"at",
+   g:"Treinar 3x por semana pode mudar sua vida. Não acredita? Vem ver.",
+   ob:"Quebrar mito de que precisa treinar muito para ter resultado",
+   vi:"📱 Colagem de resultados de alunas ou foto de treino intenso. Texto simples e direto.",
+   le:"Você não precisa treinar todo dia.\nNão precisa de dieta perfeita.\nNão precisa de academia de luxo.\n\nPrecisa de consistência, método e um ambiente que te faça querer voltar.\n\nIsso é o Studio CA.",
+   ct:"Comenta: quantas vezes você treina por semana hoje?"},
+
+  {id:7,wk:1,fmt:"reel",obj:"nu",
+   g:"Eu atendo mulheres de 25 a 75 anos. Deixa eu te mostrar como.",
+   ob:"Mostrar amplitude do público + humanizar a Cátia · nutrir",
+   vi:"📱 Reel mostrando alunas de diferentes idades e fases treinando. Tom celebrativo e acolhedor. 13–15s.",
+   le:"A aluna mais nova tem 25 anos. A mais experiente tem 74.\n\nTodas treinam. Todas evoluem. Todas se sentem bem aqui.\n\nPortuguês, inglês, espanhol — a gente se entende em qualquer idioma quando o assunto é saúde.\n\nO Studio CA não tem limite de idade. Tem limite de vagas.\n\nMe chama se quer garantir a sua.",
+   ct:"Direct: quero garantir minha vaga"},
+
+  {id:8,wk:2,fmt:"carr",obj:"at",
+   g:"Por que academia convencional não funciona para a maioria das mulheres",
+   ob:"Identificar problema do mercado e posicionar o Studio CA como solução",
+   vi:"📱 8 slides. Capa provocativa. Slides listando razões específicas com exemplos reais. Slide final: alternativa Studio CA.",
+   le:"Isso não é crítica à academia.\nÉ diagnóstico de um problema real.\n\nA maioria das mulheres não larga a academia por preguiça.\nLarga porque o ambiente não foi feito para ela.\n\nSalva esse carrossel. Compartilha com quem está passando por isso.",
+   ct:"Salva e compartilha com sua amiga que desistiu da academia"},
+
+  {id:9,wk:2,fmt:"reel",obj:"at",
+   g:"Aqui ninguém te olha torto. Aqui todo mundo tá no mesmo barco.",
+   ob:"Criar senso de comunidade e pertencimento · topo de funil",
+   vi:"📱 Mostrar alunas interagindo, se divertindo, celebrando no studio. Energia positiva. 13s.",
+   le:"A maior barreira para começar a treinar não é o cansaço.\n\nÉ o medo de ser a única que não sabe o que está fazendo.\n\nAqui no Studio CA, toda aluna já foi essa pessoa.\nE toda aluna virou outra — mais forte, mais confiante, mais ela mesma.\n\nO próximo passo é o seu. Me chama.",
+   ct:"Direct: quero fazer parte dessa comunidade"},
+
+  {id:10,wk:2,fmt:"est",obj:"nu",
+   g:"Personal trilíngue em Newark. Português, inglês e espanhol no mesmo treino.",
+   ob:"Diferencial competitivo único · atrair brasileiras, americanas e latinas",
+   vi:"📱 Foto da Cátia com expressão acolhedora. Texto com as três línguas em destaque visual.",
+   le:"Morar nos EUA não significa abrir mão de um treino que faz sentido pra você.\n\nAqui no Studio CA, você é atendida no seu idioma — português, inglês ou espanhol.\n\nSem barreira de comunicação entre você e o seu resultado.\n\nIsso é diferencial. Isso é o Studio CA.",
+   ct:"Me chama: vamos conversar no seu idioma"},
+
+  {id:11,wk:2,fmt:"reel",obj:"nu",
+   g:"Em 7 anos nos EUA aprendi que mulher brasileira quer resultado. Não promessa.",
+   ob:"Autoridade + identificação com comunidade brasileira · nutrir",
+   vi:"📱 Falar para câmera com tom firme e acolhedor ao mesmo tempo. 13–15s.",
+   le:"Faz 7 anos que vivo e trabalho nos Estados Unidos.\n\nNesse tempo aprendi que a mulher brasileira aqui fora tem uma coisa em comum:\nEla não quer papo. Quer resultado.\n\nFoi por isso que criei o Studio CA — um espaço onde cada treino tem intenção, cada aluna tem atenção e cada progresso é celebrado.\n\nSe você mora em Newark ou arredores, me chama.",
+   ct:"Direct: quero conhecer o Studio CA"},
+
+  {id:12,wk:2,fmt:"carr",obj:"nu",
+   g:"Funcional ou musculação? Qual é melhor para mulheres?",
+   ob:"Educação + posicionamento como especialista · alto salvamento",
+   vi:"📱 7 slides. Capa com pergunta polêmica. Comparativo por slide. Resposta: as duas juntas no Studio CA.",
+   le:"Essa é a pergunta que mais recebo no direct.\n\nE a resposta honesta: depende. Mas quase sempre, as duas juntas é o que funciona melhor.\n\nSalva esse carrossel para quando alguém te perguntar.",
+   ct:"Salva e me conta: você prefere funcional ou musculação?"},
+
+  {id:13,wk:2,fmt:"est",obj:"at",
+   g:"Prestes a completar 1 ano de Studio próprio. O que aprendi sobre mulheres e treino.",
+   ob:"Marco de autoridade + proximidade emocional · atrair e nutrir",
+   vi:"📱 Foto da Cátia no studio, expressão reflexiva e orgulhosa. Texto com número do aniversário em destaque.",
+   le:"Quase 1 ano de Studio CA.\n\nO que aprendi:\nMulher não para de treinar por falta de vontade.\nPara quando o ambiente não acolhe.\nPara quando não se sente vista.\nPara quando não vê resultado.\n\nCriei esse espaço pra mudar isso.\n\nObrigada a cada aluna que faz parte dessa história.",
+   ct:"Marca uma aluna do Studio CA aqui nos comentários"},
+
+  {id:14,wk:2,fmt:"reel",obj:"nu",
+   g:"Esses são os 3 erros que impedem mulheres de emagrecer no treino.",
+   ob:"Educação + autoridade · nutrir e preparar para conversão",
+   vi:"📱 Falar para câmera, listar com dedos, tom didático mas animado. 13–15s.",
+   le:"Você treina direitinho mas o resultado não vem?\n\nQuase sempre é um desses três erros.\nE nenhum deles tem a ver com você não se esforçar o suficiente.\n\nSalva esse reel e me conta nos comentários: qual dos 3 você faz?",
+   ct:"Comenta: qual dos 3 erros você faz?"},
+
+  {id:15,wk:3,fmt:"carr",obj:"co",
+   g:"O que está incluso no seu plano mensal no Studio CA",
+   ob:"Apresentar a oferta completa · fundo de funil · conversão",
+   vi:"📱 8 slides. Capa com nome do plano. Um benefício por slide com foto ou ícone. Slide final com preço e CTA.",
+   le:"USD 280 por mês pode parecer um número.\n\nAté você entender o que está incluso:\n✔ Treinos ilimitados de musculação e funcional\n✔ Personal exclusivo para mulheres\n✔ Comunidade de alunas que se apoiam\n✔ Atenção individual em cada treino\n✔ Studio exclusivo — sem fila, sem julgamento\n\nIsso não é academia. É investimento na sua saúde.\n\nMe chama no direct para garantir sua vaga.",
+   ct:"Direct: quero garantir minha vaga no Studio CA"},
+
+  {id:16,wk:3,fmt:"reel",obj:"co",
+   g:"Abriu 2 vagas no Studio CA. Mas só para agosto.",
+   ob:"Urgência real · conversão direta",
+   vi:"📱 Tom firme e direto. Falar para câmera no studio. Mostrar o espaço acolhedor ao fundo. 12–13s.",
+   le:"Trabalho com número limitado de alunas para garantir atenção individual.\n\nEssa semana abriram 2 vagas para agosto.\n\nSe você está pensando em começar, o momento é agora.\n\nMe chama no direct com a palavra VAGA e eu te explico como funciona.",
+   ct:"Direct: VAGA — quero começar em agosto"},
+
+  {id:17,wk:3,fmt:"est",obj:"co",
+   g:"Plano mensal Studio CA · USD 280 · Vagas limitadas para agosto",
+   ob:"Oferta direta · fundo de funil",
+   vi:"📱 Card elegante e limpo com nome do plano, valor e lista de benefícios principais. CTA forte.",
+   le:"Studio exclusivo para mulheres em Newark, NJ.\n\n✔ Musculação + Funcional ilimitado\n✔ Personal trilíngue (PT, EN, ES)\n✔ Atenção individual em cada treino\n✔ Comunidade de mulheres que se apoiam\n✔ Ambiente sem julgamento\n\nUSD 280 / mês · Vagas limitadas\n\nMe chama no direct para saber mais.",
+   ct:"Direct: quero minha vaga"},
+
+  {id:18,wk:3,fmt:"carr",obj:"nu",
+   g:"Como a Cátia avalia e monta o treino de cada aluna — do zero",
+   ob:"Mostrar o processo e método · gerar confiança antes da compra",
+   vi:"📱 7 slides. Capa com título. Processo passo a passo: avaliação, histórico, objetivo, montagem do treino. Slide final CTA.",
+   le:"Muita gente acha que personal trainer é só mandar fazer repetição.\n\nNão é assim que funciona aqui.\n\nCada aluna do Studio CA tem um processo de avaliação completo antes do primeiro treino.\n\nSalva esse carrossel para entender como funciona — e me chama quando quiser passar por esse processo.",
+   ct:"Salva e me chama quando quiser começar"},
+
+  {id:19,wk:3,fmt:"reel",obj:"at",
+   g:"Isso é o que acontece quando você treina com quem realmente te entende.",
+   ob:"Prova social emocional · topo de funil",
+   vi:"📱 Mostrar reação de aluna durante ou após treino — celebração, superação, alegria. 13s.",
+   le:"Resultado não é só estético.\n\nÉ a aluna que chega cansada e sai energizada.\nÉ a que não acreditava que conseguiria e na semana 4 dobrou a carga.\nÉ a que veio por emagrecimento e ficou pela confiança que ganhou.\n\nIsso é o Studio CA.\n\nMe chama se você quer sentir isso também.",
+   ct:"Direct: quero sentir isso também"},
+
+  {id:20,wk:3,fmt:"est",obj:"nu",
+   g:"Sedentária com mais de 50 anos? Esse treino foi feito pra você.",
+   ob:"Atingir público 50+ com mensagem específica · identificação e desejo",
+   vi:"📱 Foto de aluna mais experiente treinando com expressão de satisfação. Texto acolhedor e direto.",
+   le:"Depois dos 50, o corpo pede treino de força — não de descanso.\n\nMas precisar de atenção especial, instrução clara e um ambiente que respeite o seu ritmo.\n\nNo Studio CA, alunas de todas as idades treinam juntas e cada uma no seu tempo.\n\nVocê não está tarde. Você está no momento certo.",
+   ct:"Comenta: qual é a sua maior dúvida sobre começar a treinar depois dos 50?"},
+
+  {id:21,wk:3,fmt:"reel",obj:"co",
+   g:"Aluna que não sabia nem o que era agachamento. Veja onde ela está hoje.",
+   ob:"Prova social de transformação do zero · conversão",
+   vi:"📱 Contar a história de uma aluna iniciante com emoção real. Mostrar resultado atual. 13–15s.",
+   le:"Ela me disse na primeira aula: 'Cátia, eu nunca mexi com academia. Não sei nada.'\n\nHoje ela treina 4x por semana e é ela que incentiva as amigas a começar.\n\nIsso é o que o Studio CA faz: transforma iniciante em referência.\n\nSe você também está começando do zero, me chama. Esse espaço foi feito pra você.",
+   ct:"Direct: quero começar do zero"},
+
+  {id:22,wk:4,fmt:"carr",obj:"at",
+   g:"O que ninguém te conta sobre emagrecer depois dos 30 nos EUA",
+   ob:"Conteúdo específico para brasileiras nos EUA · identificação e educação",
+   vi:"📱 8 slides. Capa com dado impactante. Slides sobre mudanças hormonais, estresse de adaptação, rotina americana. Solução no final.",
+   le:"Morar nos EUA muda a rotina, o estresse, a alimentação — e o corpo sente tudo isso.\n\nEmagrecer ou manter o peso aqui não é igual a fazer no Brasil.\nE a maioria das mulheres só descobre isso depois de meses tentando sozinha.\n\nSalva esse carrossel. Vai fazer sentido.",
+   ct:"Salva e compartilha com uma brasileira nos EUA"},
+
+  {id:23,wk:4,fmt:"reel",obj:"at",
+   g:"Passei 7 anos entendendo o corpo da mulher brasileira nos EUA. Isso mudou tudo.",
+   ob:"Autoridade com experiência real · topo de funil",
+   vi:"📱 Falar para câmera, tom reflexivo e experiente. Cenário do studio ao fundo. 13–15s.",
+   le:"Quando comecei a trabalhar com mulheres aqui nos EUA, achei que seria igual ao Brasil.\n\nNão era.\n\nEstresse de adaptação. Mudança de alimentação. Saudade. Rotina diferente.\nTudo isso afeta o corpo — e o treino precisa considerar isso.\n\n7 anos depois, o Studio CA foi criado com esse conhecimento.\n\nPara a mulher que vive aqui e quer resultado real.",
+   ct:"Me chama: vamos conversar sobre o seu caso"},
+
+  {id:24,wk:4,fmt:"est",obj:"nu",
+   g:"Segundo lugar como melhor personal da comunidade. Mas o primeiro lugar é das minhas alunas.",
+   ob:"Prova social indireta + frase de marca · reconhecimento e desejo",
+   vi:"📱 Foto da Cátia com postura de quem conquista. Frase de impacto no centro. Cores do studio.",
+   le:"Em 2026 fiquei em segundo lugar no prêmio de melhor personal da comunidade.\n\nMas honestamente? O primeiro lugar sempre vai ser das alunas.\n\nCada conquista delas é maior que qualquer prêmio.\n\nObrigada a quem votou. E obrigada especialmente a cada aluna que faz valer cada treino.",
+   ct:"Marca aqui uma aluna que merece ser celebrada"},
+
+  {id:25,wk:4,fmt:"carr",obj:"co",
+   g:"Plataforma online + studio presencial: como a Cátia atende do seu celular ao vivo",
+   ob:"Apresentar a plataforma online como extensão do presencial · converter",
+   vi:"📱 7 slides. Como funciona a plataforma. Benefícios de quem não pode ir presencialmente. Cases de alunas online. CTA.",
+   le:"Você mora longe de Newark mas quer treinar com a Cátia?\n\nA plataforma online existe pra isso.\n\nMesmo método. Mesmo cuidado. Sua casa, seu horário.\n\nSalva esse carrossel para entender como funciona — e me chama no direct para saber sobre as vagas.",
+   ct:"Direct: quero saber sobre a plataforma online"},
+
+  {id:26,wk:4,fmt:"reel",obj:"nu",
+   g:"Trend com as alunas. Por que o Studio CA é diferente de tudo que você já viu.",
+   ob:"Humanização + viralização + comunidade · nutrir",
+   vi:"📱 Fazer uma trend popular do TikTok/Instagram com as alunas. Energia alta, diversão real. 13–15s.",
+   le:"Aqui a gente treina sério.\nMas também ri muito.\n\nPorque resultado de longo prazo só acontece quando você quer voltar.\nE você quer voltar quando o ambiente te faz bem.\n\nIsso é o que construímos aqui.\n\nVem fazer parte.",
+   ct:"Marca uma amiga que toparia fazer esse desafio aqui"},
+
+  {id:27,wk:4,fmt:"est",obj:"at",
+   g:"Você não precisa de motivação para treinar. Você precisa de um ambiente certo.",
+   ob:"Desconstrução de mito da motivação · identificação e desejo",
+   vi:"📱 Frase impactante em tipografia grande. Foto de aluna treinando ao fundo.",
+   le:"Motivação vai e vem.\n\nO que faz você continuar é o ambiente que criamos juntas.\n\nÉ a aluna que te pergunta por que não apareceu.\nÉ a professora que lembra do seu objetivo quando você esquece.\nÉ o studio que foi feito pra você — não para a academia média.\n\nIsso é o Studio CA.",
+   ct:"Comenta: o que te faz voltar para treinar mesmo sem vontade?"},
+
+  {id:28,wk:5,fmt:"carr",obj:"co",
+   g:"Depoimentos reais de alunas do Studio CA — em vídeo e texto",
+   ob:"Prova social estruturada · fundo de funil · conversão",
+   vi:"📱 9 slides. Capa com número de alunas. Um depoimento por bloco de 2 slides (contexto + resultado). Slide final CTA.",
+   le:"Deixei as alunas falarem.\n\nCada depoimento aqui é real, com nome e com resultado documentado.\n\nSe você está considerando começar, isso é o mais perto que você vai chegar de saber o que esperar.\n\nVagas abertas para agosto. Me chama no direct.",
+   ct:"Direct: quero começar — me conta sobre as vagas"},
+
+  {id:29,wk:5,fmt:"reel",obj:"co",
+   g:"Última semana de agosto. Ainda dá tempo de garantir sua vaga.",
+   ob:"Urgência de fechamento de mês · converter indecisos",
+   vi:"📱 Tom direto, urgente mas acolhedor. Falar para câmera no studio. 12s.",
+   le:"Agosto está acabando.\n\nE quem começou no dia 1 já está 4 semanas à frente de quem está esperando o momento certo.\n\nNão existe momento perfeito.\nExiste decisão.\n\nTenho vagas no Studio CA e também na plataforma online.\nMe chama hoje.",
+   ct:"Direct: quero começar antes de setembro"},
+
+  {id:30,wk:5,fmt:"est",obj:"co",
+   g:"Studio CA. Só para mulheres. Em Newark, NJ. E agora online para o mundo.",
+   ob:"Fechamento de ciclo · posicionamento de marca · CTA final",
+   vi:"📱 Card de marca premium. Frase de posicionamento. Foto do studio ou da Cátia com alunas. CTA elegante.",
+   le:"7 anos trabalhando com o corpo feminino nos EUA.\n1 ano de Studio próprio.\nCentenas de mulheres transformadas.\n\nO Studio CA não é academia.\nÉ o lugar onde você vai pelo resultado e fica pela comunidade.\n\nVagas abertas para setembro.\nMe chama no direct.",
+   ct:"Direct: quero começar em setembro — me conta as opções"}
+];
+
+var WK={
+  1:"Semana 1 — Apresentar e Atrair",
+  2:"Semana 2 — Educar e Construir Autoridade",
+  3:"Semana 3 — Nutrir Confiança e Converter",
+  4:"Semana 4 — Engajar e Fidelizar",
+  5:"Bloco Final — Fechar e Reativar"
+};
+var FL={reel:"Reel",carr:"Carrossel",est:"Estático"};
+var OL={at:"Atrair",nu:"Nutrir",co:"Converter"};
+var XPV={reel:15,carr:20,est:12};
+var LVS=[
+  {m:0,l:"Nível 1 · Iniciante"},
+  {m:100,l:"Nível 2 · Consistente"},
+  {m:250,l:"Nível 3 · Estrategista"},
+  {m:450,l:"Nível 4 · Referência"},
+  {m:700,l:"Nível 5 · Studio Expert"}
+];
+var ACS=[
+  {id:"f1",ic:"🎯",nm:"Primeiro post",ds:"Publique a primeira peça",ck:function(d){return d>=1;}},
+  {id:"s1",ic:"🌱",nm:"Semana 1 completa",ds:"7 peças publicadas",ck:function(d){return d>=7;}},
+  {id:"hf",ic:"⚡",nm:"Metade do caminho",ds:"15 peças publicadas",ck:function(d){return d>=15;}},
+  {id:"cv",ic:"💰",nm:"Funil ativo",ds:"5 posts de conversão",ck:function(d,s){return s.cv>=5;}},
+  {id:"st",ic:"🔥",nm:"7 dias seguidos",ds:"Sequência de 7 posts",ck:function(d,s){return s.ms>=7;}},
+  {id:"ca",ic:"🖼️",nm:"Carrossel Master",ds:"5 carrosséis publicados",ck:function(d,s){return s.ca>=5;}},
+  {id:"en",ic:"💜",nm:"Comunidade ativa",ds:"5 posts de atrair feitos",ck:function(d,s){return s.at>=5;}},
+  {id:"fl",ic:"🏆",nm:"Calendário completo",ds:"30 dias publicados",ck:function(d){return d>=30;}}
+];
+
+function gst(){try{return JSON.parse(localStorage.getItem('catia_v1')||'{"done":[]}')}catch(e){return{done:[]}}}
+function sst(s){localStorage.setItem('catia_v1',JSON.stringify(s))}
+function gdn(){return new Set(gst().done)}
+function gsh(){try{return new Set(JSON.parse(localStorage.getItem('catia_ah')||'[]'))}catch(e){return new Set()}}
+function ssh(s){localStorage.setItem('catia_ah',JSON.stringify([...s]))}
+
+function cst(){
+  var done=gdn(),xp=0,cv=0,ca=0,ms=0,st=0,at=0;
+  for(var i=0;i<D.length;i++){
+    var d=D[i];
+    if(done.has(d.id)){
+      xp+=XPV[d.fmt]||10;
+      if(d.obj==='co')cv++;
+      if(d.obj==='at')at++;
+      if(d.fmt==='carr')ca++;
+      st++;if(st>ms)ms=st;
+    }else{st=0;}
+  }
+  return{xp:xp,cv:cv,ca:ca,ms:ms,at:at};
+}
+
+function glv(xp){
+  var lv=LVS[0];
+  for(var i=0;i<LVS.length;i++){if(xp>=LVS[i].m)lv=LVS[i];}
+  return lv;
+}
+
+function upd(){
+  var done=gdn(),total=D.length,dc=done.size,st=cst(),pct=Math.round(dc/total*100);
+  document.getElementById('sd').textContent=dc;
+  document.getElementById('sl').textContent=total-dc;
+  document.getElementById('sx').textContent=st.xp;
+  document.getElementById('ss').textContent=st.ms;
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('pfi').style.width=pct+'%';
+  var lv=glv(st.xp),li=LVS.indexOf(lv),nx=LVS[li+1];
+  var xi=st.xp-lv.m,xfor=(nx?nx.m:lv.m+100)-lv.m,xp2=Math.min(100,Math.round(xi/xfor*100));
+  document.getElementById('lvlb').textContent=lv.l;
+  document.getElementById('xfi').style.width=xp2+'%';
+  document.getElementById('xn').textContent=st.xp+(nx?' / '+nx.m+' XP':' XP · MAX');
+  for(var i=0;i<D.length;i++){
+    var c=document.getElementById('c'+D[i].id);
+    if(!c)continue;
+    if(done.has(D[i].id))c.classList.add('done');else c.classList.remove('done');
+  }
+  for(var j=0;j<ACS.length;j++){
+    var el=document.getElementById('a'+ACS[j].id);
+    if(!el)continue;
+    if(ACS[j].ck(dc,st))el.classList.add('un');else el.classList.remove('un');
+  }
+}
+
+function togD(id,ev){
+  ev.stopPropagation();
+  var s=gst(),done=new Set(s.done),prev=done.size;
+  if(done.has(id))done.delete(id);else done.add(id);
+  s.done=[...done];sst(s);
+  if(done.size>prev)chkA(done.size,cst());
+  upd();
+}
+
+function chkA(dc,st){
+  var sh=gsh();
+  for(var i=0;i<ACS.length;i++){
+    var a=ACS[i];
+    if(!sh.has(a.id)&&a.ck(dc,st)){
+      sh.add(a.id);ssh(sh);
+      showT(a.ic+' '+a.nm,a.ds);
+    }
+  }
+}
+
+function showT(ttl,msg){
+  var t=document.getElementById('toast');
+  document.getElementById('tttl').textContent=ttl;
+  document.getElementById('tmsg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3500);
+}
+
+function togC(id){document.getElementById('c'+id).classList.toggle('open');}
+
+function goTab(id,btn){
+  document.querySelectorAll('.tpanel').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tbtn').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('tp-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function filt(type,btn){
+  document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  var done=gdn();
+  for(var i=0;i<D.length;i++){
+    var d=D[i],w=document.getElementById('w'+d.id);
+    if(!w)continue;
+    var show=false;
+    if(type==='all')show=true;
+    else if(type==='done')show=done.has(d.id);
+    else if(type==='pend')show=!done.has(d.id);
+    else show=(d.fmt===type||d.obj===type);
+    w.style.display=show?'':'none';
+  }
+  document.querySelectorAll('.wblk').forEach(function(b){
+    var vis=[...b.querySelectorAll('[id^="w"]')].some(function(e){return e.style.display!=='none';});
+    b.style.display=vis?'':'none';
+  });
+}
+
+function buildCal(){
+  var root=document.getElementById('calroot'),h='',cw=null;
+  for(var i=0;i<D.length;i++){
+    var d=D[i];
+    if(d.wk!==cw){
+      if(cw!==null)h+='</div>';
+      cw=d.wk;
+      var wc=D.filter(function(x){return x.wk===d.wk;}).length;
+      h+='<div class="wblk" id="wb'+d.wk+'">'
+        +'<div class="wtitle">'
+        +'<span class="wnum">'+(d.wk===5?'Final':'Sem. '+d.wk)+'</span>'
+        +WK[d.wk]
+        +'<span class="wcnt">'+wc+' dias</span>'
+        +'</div>';
+    }
+    var fb=d.fmt==='reel'?'breel':d.fmt==='carr'?'bcarr':'best';
+    var ob='b'+d.obj;
+    h+='<div id="w'+d.id+'">'
+      +'<div class="dcard" id="c'+d.id+'">'
+      +'<div class="chead" onclick="togC('+d.id+')">'
+      +'<button class="chk" onclick="togD('+d.id+',event)">&#10003;</button>'
+      +'<div class="cinfo">'
+      +'<div class="cmeta">'
+      +'<span class="cnum">Dia '+d.id+'</span>'
+      +'<span class="bdg '+fb+'">'+FL[d.fmt]+'</span>'
+      +'<span class="bdg '+ob+'">'+OL[d.obj]+'</span>'
+      +'</div>'
+      +'<div class="cgancho">'+d.g+'</div>'
+      +'</div>'
+      +'<span class="chevron">&#8964;</span>'
+      +'</div>'
+      +'<div class="cbody">'
+      +'<div class="csec"><div class="clbl">Objetivo estratégico</div><div class="ctxt">'+d.ob+'</div></div>'
+      +'<div class="csec"><div class="clbl">Sugestão visual</div><div class="vis">'+d.vi+'</div></div>'
+      +'<div class="csec"><div class="clbl">Gancho</div><div class="ctxt gs">'+d.g+'</div></div>'
+      +'<div class="csec"><div class="clbl">Legenda de alta conversão</div><div class="leg">'+d.le+'</div></div>'
+      +'<div class="ctapill">CTA → '+d.ct+'</div>'
+      +'</div>'
+      +'</div>'
+      +'</div>';
+  }
+  if(cw!==null)h+='</div>';
+  root.innerHTML=h;
+}
+
+function buildAch(){
+  document.getElementById('achgrid').innerHTML=ACS.map(function(a){
+    return '<div class="achcard" id="a'+a.id+'">'
+      +'<span class="achico">'+a.ic+'</span>'
+      +'<div class="achnm">'+a.nm+'</div>'
+      +'<div class="achdesc">'+a.ds+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+buildCal();buildAch();upd();
+
+</script>
+</body>
+</html>
