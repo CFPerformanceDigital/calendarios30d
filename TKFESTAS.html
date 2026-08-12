@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>TK Festas · Estratégia de Conteúdo & Calendário Editorial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brass:#6E5B1E;
+    --brass-dark:#3E3410;
+    --brass-light:#B9A45C;
+    --brass-pale:#EFE9D6;
+    --cream:#FBF8F1;
+    --paper:#FFFFFF;
+    --ink:#221D14;
+    --ink-soft:#5B5342;
+    --line:#E4DCC4;
+    --good:#4C7A4A;
+    --shadow: 0 10px 30px rgba(62,52,16,0.10);
+    --radius: 14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 500px at 10% -10%, #F6EFD9 0%, transparent 60%),
+      var(--cream);
+    color:var(--ink);
+    font-family:'Manrope', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Playfair Display', serif; margin:0 0 .4em 0; color:var(--brass-dark); font-weight:600;}
+  a{color:var(--brass-dark);}
+  .container{max-width:1080px; margin:0 auto; padding:0 22px;}
+
+  /* ---------- HEADER ---------- */
+  header.top{
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:50;
+  }
+  .top-inner{
+    display:flex; align-items:center; gap:16px;
+    padding:14px 22px; max-width:1080px; margin:0 auto;
+  }
+  .logo-mark{height:46px; width:46px; flex:0 0 auto; object-fit:contain;}
+  .brandline{display:flex; flex-direction:column; line-height:1.15;}
+  .brandline strong{font-family:'Playfair Display',serif; font-size:1.02rem; color:var(--brass-dark); letter-spacing:.02em;}
+  .brandline span{font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft);}
+  .top-inner .agency-link{margin-left:auto; font-size:.82rem; text-decoration:none; color:var(--brass); border:1px solid var(--brass-light); padding:7px 14px; border-radius:99px; white-space:nowrap; transition:.2s;}
+  .top-inner .agency-link:hover{background:var(--brass); color:#fff;}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:52px 0 30px; text-align:left; border-bottom:1px solid var(--line);}
+  .eyebrow{font-size:.75rem; letter-spacing:.18em; text-transform:uppercase; color:var(--brass); font-weight:700; margin-bottom:10px;}
+  .hero h1{font-size:2.1rem; max-width:760px;}
+  .hero p.lead{max-width:640px; color:var(--ink-soft); font-size:1.02rem; margin-top:8px;}
+  .hero-meta{display:flex; gap:24px; flex-wrap:wrap; margin-top:22px;}
+  .hero-meta div{font-size:.82rem; color:var(--ink-soft);}
+  .hero-meta strong{display:block; font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--brass-dark);}
+
+  /* ---------- GAMIFICATION BAR ---------- */
+  .game-bar{
+    background:linear-gradient(135deg, var(--brass-dark), var(--brass));
+    color:#fff; border-radius:var(--radius); padding:20px 22px;
+    margin:26px 0; box-shadow:var(--shadow);
+    display:flex; flex-wrap:wrap; gap:18px; align-items:center; justify-content:space-between;
+  }
+  .game-left{flex:1 1 260px;}
+  .game-left .level{font-family:'Playfair Display',serif; font-size:1.15rem; margin-bottom:4px;}
+  .game-left .sub{font-size:.78rem; opacity:.85;}
+  .progress-track{background:rgba(255,255,255,.22); border-radius:99px; height:12px; width:100%; overflow:hidden; margin-top:10px;}
+  .progress-fill{background:#F3D97A; height:100%; width:0%; border-radius:99px; transition:width .5s ease;}
+  .game-stats{display:flex; gap:22px; text-align:center;}
+  .game-stats div strong{display:block; font-family:'Playfair Display',serif; font-size:1.5rem;}
+  .game-stats div span{font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; opacity:.85;}
+  .reset-btn{background:transparent; border:1px solid rgba(255,255,255,.5); color:#fff; padding:8px 14px; border-radius:99px; font-size:.72rem; cursor:pointer; letter-spacing:.04em;}
+  .reset-btn:hover{background:rgba(255,255,255,.15);}
+
+  /* ---------- NAV TABS ---------- */
+  nav.tabs{
+    display:flex; gap:6px; overflow-x:auto; padding:6px 0 14px; margin-bottom:10px;
+    border-bottom:1px solid var(--line);
+  }
+  nav.tabs button{
+    font-family:'Manrope',sans-serif; font-weight:700; font-size:.82rem;
+    background:transparent; border:none; padding:10px 16px; border-radius:99px 99px 0 0;
+    color:var(--ink-soft); cursor:pointer; white-space:nowrap; border-bottom:3px solid transparent;
+  }
+  nav.tabs button.active{color:var(--brass-dark); border-bottom:3px solid var(--brass);}
+
+  section.tabpanel{display:none; padding:8px 0 50px;}
+  section.tabpanel.active{display:block;}
+
+  /* ---------- CARDS / BLOCKS ---------- */
+  .block{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:24px 26px; margin-bottom:20px; box-shadow:var(--shadow);}
+  .block h2{font-size:1.35rem; display:flex; align-items:center; gap:10px;}
+  .block h2 .num{font-family:'Manrope',sans-serif; font-size:.72rem; font-weight:800; color:#fff; background:var(--brass); border-radius:8px; padding:3px 9px;}
+  .block h3{font-size:1.05rem; margin-top:18px; color:var(--brass);}
+  .block p{color:var(--ink-soft); margin:6px 0;}
+  .block ul{margin:8px 0; padding-left:20px; color:var(--ink-soft);}
+  .block li{margin-bottom:6px;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .pill{display:inline-block; background:var(--brass-pale); color:var(--brass-dark); font-size:.72rem; font-weight:700; padding:4px 10px; border-radius:99px; margin:2px 4px 2px 0;}
+  .objection{border-left:3px solid var(--brass-light); padding:10px 14px; margin:10px 0; background:var(--cream); border-radius:0 8px 8px 0;}
+  .objection b{color:var(--brass-dark);}
+  .quote-strip{font-family:'Playfair Display',serif; font-style:italic; color:var(--brass-dark); font-size:1.15rem; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:16px 0; margin:18px 0; text-align:center;}
+  .funnel{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:10px;}
+  .funnel div{background:var(--cream); border:1px solid var(--line); border-radius:10px; padding:14px;}
+  .funnel h4{font-size:.85rem; margin:0 0 6px 0; color:var(--brass-dark);}
+  .funnel p{font-size:.85rem; margin:0;}
+
+  /* ---------- CALENDAR TABLE ---------- */
+  .week-label{font-family:'Playfair Display',serif; color:var(--brass-dark); font-size:1.02rem; margin:26px 0 10px; padding-top:6px; border-top:2px solid var(--brass-pale);}
+  .day-card{background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:12px; box-shadow:0 4px 14px rgba(62,52,16,.06); transition:.2s;}
+  .day-card.done{background:#F3F8F1; border-color:#CFE4CB;}
+  .day-head{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:8px;}
+  .day-num{font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--brass-dark); min-width:34px;}
+  .day-date{font-size:.72rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em;}
+  .fmt-tag{font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; padding:4px 10px; border-radius:99px;}
+  .fmt-reels{background:#F3E4CF; color:#8A5A22;}
+  .fmt-carrossel{background:#E3E9F5; color:#39508A;}
+  .fmt-estatico{background:#EFE3F2; color:#6E3B84;}
+  .day-theme{font-weight:700; color:var(--ink); margin-bottom:2px;}
+  .day-obj{font-size:.82rem; color:var(--ink-soft); margin-bottom:10px;}
+  .day-detail{display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:.85rem;}
+  .day-detail .full{grid-column:1/-1;}
+  .day-detail label{display:block; font-size:.66rem; text-transform:uppercase; letter-spacing:.06em; color:var(--brass); font-weight:800; margin-bottom:2px;}
+  .day-detail p{margin:0; color:var(--ink-soft);}
+  .day-foot{display:flex; align-items:center; justify-content:space-between; margin-top:12px; padding-top:10px; border-top:1px dashed var(--line);}
+  .check-wrap{display:flex; align-items:center; gap:8px; font-size:.8rem; font-weight:700; color:var(--good); cursor:pointer; user-select:none;}
+  .check-wrap input{width:18px; height:18px; accent-color:var(--good); cursor:pointer;}
+  .xp-tag{font-size:.68rem; color:var(--brass); font-weight:700;}
+
+  /* ---------- REELS TESTE TABLE ---------- */
+  .reels-note{background:var(--brass-pale); border-radius:10px; padding:14px 16px; font-size:.85rem; color:var(--brass-dark); margin-bottom:18px;}
+  .reels-day-block{margin-bottom:18px; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--paper);}
+  .reels-day-top{background:var(--cream); padding:10px 16px; font-weight:800; font-size:.85rem; color:var(--brass-dark); display:flex; justify-content:space-between; align-items:center;}
+  .reel-row{display:grid; grid-template-columns:26px 1.6fr 1fr 1fr 1fr 34px; gap:10px; padding:10px 16px; align-items:center; border-top:1px solid var(--line); font-size:.8rem;}
+  .reel-row .rlabel{display:none; font-size:.62rem; text-transform:uppercase; color:var(--brass); font-weight:800;}
+  .reel-row span.hook{font-weight:600; color:var(--ink);}
+  .reel-row .muted{color:var(--ink-soft);}
+  .reel-num{font-weight:800; color:var(--brass);}
+
+  footer.bottom{margin-top:40px; padding:40px 0 60px; text-align:center; border-top:1px solid var(--line);}
+  footer.bottom img{height:70px; margin-bottom:12px; opacity:.95;}
+  footer.bottom p{font-size:.82rem; color:var(--ink-soft); margin:2px 0;}
+  footer.bottom a{font-weight:700; text-decoration:none;}
+
+  @media (max-width:720px){
+    .hero h1{font-size:1.55rem;}
+    .grid2{grid-template-columns:1fr;}
+    .funnel{grid-template-columns:1fr;}
+    .day-detail{grid-template-columns:1fr;}
+    .game-bar{flex-direction:column; align-items:flex-start;}
+    .game-stats{width:100%; justify-content:space-between;}
+    .reel-row{grid-template-columns:1fr; gap:4px; padding:12px 14px;}
+    .reel-row .rlabel{display:block;}
+    .reel-row .check-cell{display:flex; justify-content:flex-end;}
+    .top-inner .agency-link{font-size:.7rem; padding:6px 10px;}
+    .brandline strong{font-size:.88rem;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <img class="logo-mark" src="data:image/png;base64,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" alt="CF Performance Digital">
+    <div class="brandline">
+      <strong>CF Performance Digital</strong>
+      <span>Estratégia de conteúdo</span>
+    </div>
+    <a class="agency-link" href="https://www.instagram.com/carolfilippeof" target="_blank" rel="noopener">@carolfilippeof ↗</a>
+  </div>
+</header>
+
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">Plano estratégico · @tkfestas_ · Osasco / Padroeira</div>
+    <h1>TK Festas — Reposicionamento de Marca &amp; Calendário Editorial Gamificado</h1>
+    <p class="lead">Diagnóstico completo do perfil, novo posicionamento de marca, linha editorial e um calendário de 30 dias com roteiros de Reels, feito para transformar a TK Festas na decoração mais lembrada do bairro Padroeira, em Osasco.</p>
+    <div class="hero-meta">
+      <div><strong>702</strong>seguidores atuais</div>
+      <div><strong>1</strong>post publicado</div>
+      <div><strong>30</strong>dias de calendário</div>
+      <div><strong>90</strong>roteiros de Reels Teste</div>
+      <div><strong>Set/2026</strong>período do plano</div>
+    </div>
+  </section>
+
+  <div class="game-bar">
+    <div class="game-left">
+      <div class="level" id="levelLabel">Nível 1 · Plantando a Semente 🌱</div>
+      <div class="sub" id="subLabel">Marque as atividades conforme forem publicadas — seu progresso fica salvo automaticamente.</div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <div class="game-stats">
+      <div><strong id="statDone">0</strong><span>Feitas</span></div>
+      <div><strong id="statTotal">120</strong><span>Total</span></div>
+      <div><strong id="statPct">0%</strong><span>Progresso</span></div>
+    </div>
+    <button class="reset-btn" id="resetBtn" type="button">Zerar progresso</button>
+  </div>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="diagnostico" class="active">1 · Diagnóstico</button>
+    <button data-tab="posicionamento">2 · Posicionamento</button>
+    <button data-tab="editorial">3 · Linha Editorial</button>
+    <button data-tab="calendario">4 · Calendário 30 Dias</button>
+    <button data-tab="reelsteste">5 · Reels Teste</button>
+  </nav>
+
+  <!-- ================= TAB 1: DIAGNÓSTICO ================= -->
+  <section class="tabpanel active" id="diagnostico">
+
+    <div class="block">
+      <h2><span class="num">01</span> Posicionamento atual</h2>
+      <p>Hoje o perfil comunica algo muito comum e muito perigoso no Instagram: <b>a marca parece maior do que realmente é operando</b>. 702 seguidores com apenas 1 post é um descompasso que gera desconfiança silenciosa — quem chega no perfil pensa "por que tem tanta gente seguindo e nada publicado?". A bio fala de "memórias para toda a vida", mas não existe nenhuma prova visual disso. O post único é sobre a origem da marca (2022), o que é bonito como storytelling, mas sozinho não vende: não mostra festa pronta, não mostra preço, não mostra a região atendida, não mostra depoimento. Resultado: a percepção é de projeto pessoal ainda começando, não de negócio profissional pronto para receber pedidos.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="num">02</span> Pontos críticos de bloqueio</h2>
+      <div class="grid2">
+        <div>
+          <h3>Bio</h3>
+          <ul>
+            <li>Sem menção ao bairro/região — quem busca "decoração Osasco" não te encontra na intenção.</li>
+            <li>Sem prova de resultado (nº de festas feitas, nota, depoimento).</li>
+            <li>Sem gatilho de urgência ou de oferta ("agenda de setembro aberta").</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Conteúdo</h3>
+          <ul>
+            <li>Feed praticamente vazio — a primeira impressão decide se a pessoa chama no WhatsApp ou sai da tela.</li>
+            <li>Nenhum Reels publicado — hoje é o formato que o Instagram mais entrega para contas novas.</li>
+            <li>Zero portfólio dos eventos já realizados nos últimos meses (que existem, mas não foram postados).</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Oferta</h3>
+          <ul>
+            <li>Não fica claro o que é "pegue e monte" x "decoração completa" — são dois produtos com ticket diferente e isso não está comunicado.</li>
+            <li>Sem preço de entrada visível ("a partir de") — gera atrito para pedir orçamento.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Funil</h3>
+          <ul>
+            <li>Não existe caminho guiado do "vi o post" até "chamei no WhatsApp" — depende 100% da pessoa ter iniciativa.</li>
+            <li>Sem stories fixados de portfólio, dúvidas frequentes ou como funciona o processo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="num">03</span> Dores visíveis do público</h2>
+      <ul>
+        <li>"Quanto custa?" — a pergunta mais comum e a que menos tem resposta visível no perfil.</li>
+        <li>"Vocês entregam e montam no meu bairro mesmo?" — dúvida geográfica, ainda mais decisiva num público de proximidade como o Padroeira.</li>
+        <li>"O que está incluso no pacote pegue e monte?"</li>
+        <li>"Com quanto tempo de antecedência preciso reservar?"</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h2><span class="num">04</span> Dores ocultas do público</h2>
+      <ul>
+        <li>Medo de contratar alguém sem fotos suficientes e a festa "não ficar como combinado".</li>
+        <li>Medo de pagar e a decoração parecer "pobre" diante de amigos e família — decoração de festa é, no fundo, sobre status social dentro do próprio ciclo.</li>
+        <li>Insegurança de negociar com um perfil pequeno e "sumir depois que pagou o sinal".</li>
+        <li>Vergonha de perguntar preço e achar caro — muita gente prefere sair do perfil sem perguntar a se expor.</li>
+      </ul>
+    </div>
+
+    <div class="quote-strip">"Eu não quero só alugar mesa e cadeira. Eu quero que, quando as pessoas chegarem, digam: nossa, que festa linda."</div>
+
+    <div class="block">
+      <h2><span class="num">05</span> Desejos emocionais</h2>
+      <ul>
+        <li>Se sentir uma mãe/anfitriã cuidadosa, competente, que "não deixou por menos" mesmo com orçamento limitado.</li>
+        <li>Parecer que contratou uma produtora de eventos, mesmo pagando um valor acessível de pegue e monte.</li>
+        <li>Viver a festa sem estresse de montagem — sentir alívio e orgulho ao mesmo tempo.</li>
+      </ul>
+      <h2 style="margin-top:22px;"><span class="num">06</span> Desejos práticos</h2>
+      <ul>
+        <li>Economizar sem abrir mão da decoração bonita nas fotos.</li>
+        <li>Ter tudo entregue e montado no bairro, sem precisar buscar em vários lugares diferentes.</li>
+        <li>Fechar o orçamento rápido, pelo WhatsApp, sem burocracia.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h2><span class="num">07</span> Objeções que travam a compra</h2>
+      <div class="objection"><b>1. "Deve ser caro."</b> — Sem preço de entrada visível, a mente do público sempre assume o pior cenário.</div>
+      <div class="objection"><b>2. "Não conheço, é confiável?"</b> — Perfil novo e com pouco conteúdo publicado reduz a prova social e aumenta o risco percebido.</div>
+      <div class="objection"><b>3. "Será que os itens são bonitos de perto / bem cuidados?"</b> — Fotos reais de montagens fazem essa objeção cair sozinha.</div>
+      <div class="objection"><b>4. "E se atrasar ou faltar item no dia da festa?"</b> — Medo logístico típico de quem já teve experiência ruim com fornecedor.</div>
+      <div class="objection"><b>5. "Tem opção mais conhecida na região, por que escolher vocês?"</b> — Falta de diferenciação clara frente a concorrentes estabelecidos.</div>
+    </div>
+
+    <div class="block">
+      <h2><span class="num">08</span> Oportunidade de mercado</h2>
+      <p>A TK Festas pode ocupar um espaço que praticamente nenhum concorrente de Osasco está ocupando hoje: <b>ser a decoração hiperlocal do Padroeira</b> — próxima, pessoal, com dois produtos claros (pegue e monte econômico + decoração personalizada premium) e comunicação descontraída de "vizinha que virou especialista", em vez do tom corporativo distante que grande parte das concorrentes usa.</p>
+    </div>
+  </section>
+
+  <!-- ================= TAB 2: POSICIONAMENTO ================= -->
+  <section class="tabpanel" id="posicionamento">
+
+    <div class="block">
+      <h2><span class="num">01</span> Novo posicionamento</h2>
+      <p>A TK Festas deixa de ser "mais uma locação de itens de festa" e passa a se posicionar como <b>a decoração de festa mais querida e mais próxima do bairro Padroeira</b> — a marca que qualquer vizinho lembra na hora de decorar um aniversário, sem gastar uma fortuna e sem abrir mão de ficar linda nas fotos.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="num">02</span> Nova bio estratégica</h2>
+      <div class="objection" style="border-left-color:var(--brass);">
+        🎉 Decoração de festas do Padroeira pra você, Osasco<br>
+        ✨ Pegue e Monte econômico ou Decoração Completa personalizada<br>
+        📍 Entrega e montagem na região · fotos reais em cada post<br>
+        👇 Orçamento em minutos pelo WhatsApp
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="num">03</span> Tom de voz e linha editorial por formato</h2>
+      <ul>
+        <li><b>Reels:</b> descontraído, rápido, com gancho de POV nos primeiros 2 segundos — fala como quem manda áudio pra amiga, não como quem lê comunicado.</li>
+        <li><b>Carrossel:</b> tom de "deixa eu te ensinar" — educa e mostra bastidor, sem parecer aula chata.</li>
+        <li><b>Estático:</b> visual limpo, frase curta e direta, foto real da festa em destaque.</li>
+        <li><b>Stories:</b> bastidor cru, sem produção, humaniza quem está por trás da marca.</li>
+        <li><b>Legenda:</b> primeira linha sempre com gancho, nunca começa explicando o serviço.</li>
+      </ul>
+    </div>
+
+    <div class="grid2">
+      <div class="block">
+        <h2><span class="num">04</span> Arquétipo de marca</h2>
+        <p><b>Cuidadora com toque de Criadora.</b> A TK Festas cuida de cada detalhe da festa como se fosse da própria família, mas também tem o olhar estético de quem sabe montar cenário bonito com pouco. É a mistura de "colo" com "capricho".</p>
+      </div>
+      <div class="block">
+        <h2><span class="num">05</span> Frase de posicionamento</h2>
+        <p style="font-family:'Playfair Display',serif; font-style:italic; font-size:1.2rem; color:var(--brass-dark);">"A decoração que faz o Padroeira inteiro perguntar: quem fez essa festa?"</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TAB 3: LINHA EDITORIAL ================= -->
+  <section class="tabpanel" id="editorial">
+
+    <div class="block">
+      <h2><span class="num">01</span> Pilares de conteúdo</h2>
+      <div class="grid2">
+        <div><h3>Prova Social</h3><p>Fotos e vídeos reais das festas já feitas nos últimos meses — o maior ativo parado da marca hoje.</p></div>
+        <div><h3>Bastidor de Montagem</h3><p>Como funciona o pegue e monte, tempo de montagem, cuidado com os itens.</p></div>
+        <div><h3>Educação/Dica</h3><p>Como economizar decorando festa em casa, o que priorizar no orçamento.</p></div>
+        <div><h3>Comunidade Bairro</h3><p>Conteúdo falando diretamente com quem mora no Padroeira e região de Osasco.</p></div>
+        <div><h3>Quebra de Objeção</h3><p>Preço, prazo, confiança — respondidas de forma leve, nunca defensiva.</p></div>
+        <div><h3>Storytelling de Marca</h3><p>A origem em 2022, os bastidores de quem faz, os bastidores humanos por trás do perfil.</p></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="num">02</span> Regras de comunicação da marca</h2>
+      <div class="grid2">
+        <div>
+          <h3>Sempre fazer</h3>
+          <ul>
+            <li>Mostrar rosto e voz de quem está por trás da marca — gera confiança imediata.</li>
+            <li>Fechar todo Reels com um CTA único e claro.</li>
+            <li>Usar fotos reais das festas, mesmo que amadoras — nunca banco de imagem.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Nunca fazer</h3>
+          <ul>
+            <li>Postar sem gancho nos 2 primeiros segundos.</li>
+            <li>Prometer preço "sob consulta" sem dar nenhuma referência de valor.</li>
+            <li>Repetir a mesma estrutura de gancho mais de 2 vezes seguidas.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="num">03</span> Paleta de sentimentos por etapa de funil</h2>
+      <div class="funnel">
+        <div><h4>Topo</h4><p>Encantamento, identificação ("é isso que eu quero pra festa do meu filho").</p></div>
+        <div><h4>Meio</h4><p>Confiança, alívio ("dá pra confiar, tem gente que já contratou e amou").</p></div>
+        <div><h4>Fundo</h4><p>Urgência tranquila, segurança na decisão ("é só chamar no direct e resolver").</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TAB 4: CALENDÁRIO ================= -->
+  <section class="tabpanel" id="calendario">
+    <div class="reels-note">Calendário de <b>setembro/2026</b> — 30 dias, misturando Reels, Carrossel e Estático (média de 3 Reels · 2 Carrosséis · 2 Estáticos por semana). Marque cada card como "publicado" para acompanhar o progresso no topo da página.</div>
+    <div id="calendarWrap"></div>
+  </section>
+
+  <!-- ================= TAB 5: REELS TESTE ================= -->
+  <section class="tabpanel" id="reelsteste">
+    <div class="reels-note">
+      <b>Aba separada para a equipe não se perder.</b> Aqui estão 3 roteiros de Reels-teste por dia (90 no total) — ganchos curtos de até 15s pensados pra escalar visualização. Cada roteiro combina: gancho POV, ângulo de gravação, categoria de áudio em alta e CTA. Antes de gravar, troque os detalhes entre colchetes pelo evento real da semana (nome, tema da festa, valor) — isso é o que faz o roteiro parecer genuíno e não "modelo pronto".
+    </div>
+    <div id="reelsWrap"></div>
+  </section>
+
+</div>
+
+<footer class="bottom">
+  <img src="data:image/png;base64,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" alt="CF Performance Digital">
+  <p>Produzido por <b>CF Performance Digital</b> · <a href="https://www.instagram.com/carolfilippeof" target="_blank" rel="noopener">@carolfilippeof</a></p>
+  <p style="font-size:.72rem; opacity:.7;">Plano estratégico exclusivo para @tkfestas_ · Setembro 2026</p>
+</footer>
+
+<script>
+/* ---------------- STORAGE ABSTRACTION (window.storage w/ localStorage fallback) ---------------- */
+const STORE_KEY = "cf_tkfestas_progress_v1";
+let state = { done: {} };
+
+async function loadProgress(){
+  try{
+    if (window.storage){
+      const r = await window.storage.get(STORE_KEY);
+      if (r && r.value) { state = JSON.parse(r.value); return; }
+    }
+  }catch(e){}
+  try{
+    const v = localStorage.getItem(STORE_KEY);
+    if (v) state = JSON.parse(v);
+  }catch(e){}
+}
+async function saveProgress(){
+  try{
+    if (window.storage){ await window.storage.set(STORE_KEY, JSON.stringify(state), false); }
+  }catch(e){}
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+}
+
+/* ---------------- TABS ---------------- */
+document.getElementById('tabs').addEventListener('click', (e)=>{
+  const btn = e.target.closest('button[data-tab]');
+  if(!btn) return;
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('section.tabpanel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+  window.scrollTo({top: document.querySelector('nav.tabs').offsetTop - 70, behavior:'smooth'});
+});
+
+/* ---------------- CALENDAR DATA (30 days · Sept 2026) ---------------- */
+const WEEKDAYS = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
+// Sept 1 2026 = Tuesday (index 2)
+function dateLabel(day){
+  const d = new Date(2026,8,day); // month 8 = September
+  return WEEKDAYS[d.getDay()] + " · " + String(day).padStart(2,'0') + "/09";
+}
+
+const calendarDays = [
+{f:"carrossel", tema:"Do sonho de 2022 pra hoje", obj:"Reconectar seguidores antigos com a marca e justificar por que o feed está recomeçando.", gancho:"Slide 1: \"Em 2022 a TK Festas era só um sonho de família. Hoje é isso 👇\"", visual:"6 slides: foto do primeiro evento (2022) → 4 fotos reais de festas feitas nos últimos meses → slide final com \"agenda de setembro aberta\".", legenda:"A gente parou de postar, mas não parou de fazer festa linda. Esses meses tiveram muita decoração rolando — chegou a hora de mostrar. Comenta 🎉 se você já nos viu por aí.", cta:"Comenta 🎉 ou chama no direct pra ver o catálogo completo.", tags:["#tkfestas","#decoracaodefestas","#osasco","#padroeira","#festainfantil"]},
+{f:"reels", tema:"POV cliente vendo a decoração pronta", obj:"Gerar identificação emocional e views rápidas com formato POV.", gancho:"\"POV: você só pediu decoração simples e a TK Festas entregou ISSO\"", visual:"Filmar a decoração pronta com movimento de câmera de baixo pra cima revelando o cenário, corte seco no beat.", legenda:"Simples pra quem paga, especial pra quem recebe. Marca quem vai fazer festa esse mês.", cta:"Marca aquela amiga que tá planejando festa.", tags:["#tkfestas","#festadecorada","#osasco","#reelsviral","#decoracaopersonalizada"]},
+{f:"estatico", tema:"Preço de entrada do Pegue e Monte", obj:"Quebrar a objeção nº1 (\"deve ser caro\") mostrando valor de entrada.", gancho:"\"Decoração de festa em Osasco a partir de R$ [valor] 👀\"", visual:"Arte estática com foto real de um kit pegue e monte + valor \"a partir de\" em destaque.", legenda:"Isso mesmo, decoração bonita não precisa custar uma fortuna. O pegue e monte já sai pronto pra você montar em casa. Chama no WhatsApp e recebe a tabela completa.", cta:"Manda 'TABELA' no direct.", tags:["#tkfestas","#pegueemonte","#osasco","#festaemcasa","#economia"]},
+{f:"reels", tema:"Bastidor de montagem em 60s", obj:"Mostrar processo real e gerar confiança logística.", gancho:"\"Bastidor de uma montagem completa em Osasco, do zero ao pronto\"", visual:"Timelapse/transições rápidas: chegada dos itens → montagem → mesa pronta com balões.", legenda:"Do carro até a festa pronta: é assim que cuidamos de cada detalhe. Comenta se quer ver o antes e depois completo.", cta:"Comenta 'ANTES E DEPOIS' pra receber o vídeo completo.", tags:["#tkfestas","#bastidores","#montagemdefesta","#osasco","#decoracao"]},
+{f:"carrossel", tema:"O que está incluso no Pegue e Monte", obj:"Educar sobre a oferta e reduzir dúvida frequente.", gancho:"Slide 1: \"O que realmente vem no Pegue e Monte da TK Festas?\"", visual:"7 slides listando cada item incluso (painel, mesa, balões, toalha, etc.) com foto real de cada um.", legenda:"Chega de ficar na dúvida do que está incluso. Aqui o combo já vem completo, só montar. Salva esse post pra consultar na hora de fechar sua festa.", cta:"Salva o post e chama no direct pra reservar sua data.", tags:["#tkfestas","#pegueemonte","#osasco","#festainfantil","#decoracaodefestas"]},
+{f:"estatico", tema:"Depoimento real de cliente", obj:"Construir prova social direta.", gancho:"\"'Eu não esperava que ficasse tão lindo' — cliente TK Festas\"", visual:"Foto da festa pronta + print (fictício até ter real) de mensagem de agradecimento da cliente.", legenda:"Ler mensagem assim é o motivo de fazermos o que fazemos. Bora fazer a sua também?", cta:"Chama no WhatsApp e garante sua data.", tags:["#tkfestas","#depoimento","#osasco","#padroeira","#festadecorada"]},
+{f:"reels", tema:"3 perguntas que todo cliente faz antes de fechar", obj:"Quebrar objeções de preço, prazo e região em um único vídeo educativo e ágil.", gancho:"\"3 perguntas que TODO mundo faz antes de chamar a gente no direct\"", visual:"Reels falado, corte rápido a cada pergunta, texto na tela reforçando cada resposta.", legenda:"Preço, prazo e se atendemos seu bairro — te respondo os 3 agora. Ainda ficou com dúvida? Chama no direct.", cta:"Chama no direct, a gente responde na hora.", tags:["#tkfestas","#duvidasfrequentes","#osasco","#decoracaodefestas","#padroeira"]},
+
+{f:"carrossel", tema:"Pegue e Monte x Decoração Completa: qual escolher", obj:"Diferenciar os dois produtos e direcionar cada perfil de cliente para a oferta certa.", gancho:"Slide 1: \"Pegue e Monte ou Decoração Completa? Te ajudo a escolher\"", visual:"6 slides comparando os dois formatos (quem monta, o que inclui, pra qual perfil de festa serve).", legenda:"Não existe certo ou errado, existe o ideal pra sua festa. Qual combina mais com você?", cta:"Comenta 1 (Pegue e Monte) ou 2 (Decoração Completa).", tags:["#tkfestas","#decoracaodefestas","#osasco","#festainfantil","#pegueemonte"]},
+{f:"reels", tema:"Erro comum ao decorar festa em casa", obj:"Posicionar a marca como especialista educando o público.", gancho:"\"O erro nº1 que quase todo mundo comete ao decorar festa em casa\"", visual:"Falado direto pra câmera, mostrando exemplo do erro e depois a solução aplicada em uma decoração real.", legenda:"Isso muda TUDO na hora das fotos. Salva esse vídeo pra lembrar na sua próxima festa.", cta:"Salva o vídeo e segue pra mais dicas assim.", tags:["#tkfestas","#dicasdefesta","#osasco","#decoracao","#festaemcasa"]},
+{f:"estatico", tema:"Chamada para agenda de setembro", obj:"Gerar urgência e captar orçamentos.", gancho:"\"Setembro tem [X] datas disponíveis. Sua festa está entre elas?\"", visual:"Arte estática com calendário estilizado destacando datas livres.", legenda:"As datas de setembro estão fechando rápido. Se sua festa é esse mês, corre pro direct.", cta:"Manda 'DATA' no WhatsApp e garante a sua.", tags:["#tkfestas","#agendaaberta","#osasco","#padroeira","#festadeaniversario"]},
+{f:"reels", tema:"Dia na vida de quem monta festa", obj:"Humanizar a marca e aumentar tempo de retenção com formato \"day in the life\".", gancho:"\"Um dia normal pra gente: acordar, montar uma festa linda, repetir\"", visual:"Sequência de clipes curtos do dia de montagem, do carro carregado até a festa pronta.", legenda:"Cansativo? Sim. Vale a pena ver o resultado? Sempre. Comenta se você também ama um bastidor.", cta:"Comenta ❤️ se curtiu o bastidor.", tags:["#tkfestas","#diadeevento","#osasco","#bastidores","#decoracaodefestas"]},
+{f:"carrossel", tema:"Antes e depois de uma sala decorada", obj:"Mostrar transformação real de ambiente, forte gatilho de desejo.", gancho:"Slide 1: \"Essa sala era só sala. Olha o que a decoração fez com ela\"", visual:"Slide antes (ambiente vazio) → slides do processo → slide final com a festa pronta.", legenda:"A mesma sala, um resultado completamente diferente. Isso é o poder de uma decoração bem pensada.", cta:"Chama no direct e transforma a sua também.", tags:["#tkfestas","#antesedepois","#osasco","#decoracaodefestas","#transformacao"]},
+{f:"estatico", tema:"Depoimento em texto + nota da cliente", obj:"Reforçar prova social com formato mais direto.", gancho:"\"Nota 10 de quem já contratou a TK Festas\"", visual:"Arte com estrelas + frase curta de depoimento (real ou coletado após próximos eventos).", legenda:"Cada nota dessas é um combustível pra continuar fazendo o nosso melhor. Obrigada, [nome da cliente]!", cta:"Vem ser a próxima festa nota 10 — chama no direct.", tags:["#tkfestas","#avaliacao","#osasco","#padroeira","#festadecorada"]},
+
+{f:"reels", tema:"Quanto custa decorar uma festa em Osasco em 2026", obj:"Ranquear em buscas de intenção (\"quanto custa festa Osasco\") e captar tráfego qualificado.", gancho:"\"Quanto custa decorar uma festa em Osasco em 2026? Te mostro os valores reais\"", visual:"Falado, com valores aproximados na tela (Pegue e Monte x Decoração Completa).", legenda:"Chega de pesquisar sem achar valor nenhum. Aqui a real do que custa decorar bem, sem gastar além da conta.", cta:"Chama no direct e recebe seu orçamento personalizado.", tags:["#tkfestas","#osasco","#orcamentodefesta","#decoracaodefestas","#padroeira"]},
+{f:"carrossel", tema:"Somos do Padroeira, entregamos pra toda Osasco", obj:"Reforçar proximidade geográfica e ampliar percepção de alcance.", gancho:"Slide 1: \"A gente é do Padroeira. E a sua festa, é de onde?\"", visual:"Mapa estilizado simples do bairro + fotos de festas realizadas em diferentes regiões de Osasco.", legenda:"Local que entende gente daqui. Comenta seu bairro pra gente confirmar se atendemos aí.", cta:"Comenta seu bairro nos comentários.", tags:["#tkfestas","#osasco","#padroeira","#decoracaolocal","#festadecorada"]},
+{f:"estatico", tema:"Regra de ouro: reserve com antecedência", obj:"Educar sobre prazo e evitar frustração de cliente de última hora.", gancho:"\"Regra de ouro pra garantir sua data: reserve com pelo menos [X] dias\"", visual:"Arte com ícone de calendário + frase de destaque.", legenda:"Datas boas (fins de semana principalmente) saem rápido. Quanto antes reservar, mais tranquilo fica o processo.", cta:"Chama no direct e já garanta sua data.", tags:["#tkfestas","#planejamento","#osasco","#festadeaniversario","#dicas"]},
+{f:"reels", tema:"3 formas de economizar decorando festa em casa", obj:"Formato lista, alto potencial de salvamento.", gancho:"\"3 formas de economizar decorando sua festa (sem parecer barato)\"", visual:"Falado com texto na tela numerando cada dica, exemplos reais ao fundo.", legenda:"Decoração linda não é sinônimo de caro. Salva esse vídeo antes de fechar sua próxima festa.", cta:"Salva o vídeo pra usar na hora de planejar.", tags:["#tkfestas","#dicasdefesta","#economia","#osasco","#decoracao"]},
+{f:"carrossel", tema:"Passo a passo: como funciona contratar a TK Festas", obj:"Reduzir atrito do processo de compra mostrando o passo a passo.", gancho:"Slide 1: \"Como funciona contratar a TK Festas, do direct até o dia da festa\"", visual:"5 slides numerados: 1) chama no direct 2) escolhe o pacote 3) confirma a data 4) a gente monta 5) você aproveita.", legenda:"Simples assim. Sem burocracia, sem enrolação. Bora começar?", cta:"Chama no direct e dá o primeiro passo.", tags:["#tkfestas","#comofunciona","#osasco","#padroeira","#decoracaodefestas"]},
+{f:"estatico", tema:"Reforço de agenda e chamada para orçamento", obj:"Fechar a semana com CTA direto de conversão.", gancho:"\"Sua festa de outubro já pode ser reservada agora\"", visual:"Arte estática com foto de destaque e texto de chamada.", legenda:"Quem reserva com antecedência garante o melhor atendimento e a melhor data. Bora planejar a sua?", cta:"Manda 'ORÇAMENTO' no WhatsApp.", tags:["#tkfestas","#osasco","#agendaaberta","#festadecorada","#padroeira"]},
+
+{f:"reels", tema:"'Isso não vai caber no meu orçamento' — quebra de objeção", obj:"Enfrentar diretamente a objeção de preço com humor leve.", gancho:"\"Ela achou que não ia caber no orçamento... até ver o valor real\"", visual:"Formato storytime falado, com reveal do valor no final.", legenda:"Antes de descartar, chama no direct. Muita gente se surpreende com o quanto cabe no orçamento.", cta:"Chama no direct antes de desistir da decoração dos sonhos.", tags:["#tkfestas","#osasco","#orcamento","#decoracaodefestas","#festainfantil"]},
+{f:"carrossel", tema:"5 detalhes que fazem toda decoração parecer mais cara", obj:"Conteúdo educativo de alto valor percebido, forte potencial de salvamento.", gancho:"Slide 1: \"5 detalhes que fazem qualquer decoração parecer 3x mais cara\"", visual:"5 slides, cada um com foto de um detalhe real usado em festas da TK (painel, luz, arranjo de mesa, etc.).", legenda:"Detalhe é o que separa uma festa boa de uma festa inesquecível. Salva pra usar de inspiração.", cta:"Salva o post e me conta qual detalhe você mais gostou.", tags:["#tkfestas","#dicasdedecoracao","#osasco","#festadecorada","#inspiracao"]},
+{f:"estatico", tema:"Comparação honesta: por que escolher a TK Festas", obj:"Diferenciação frente a concorrentes sem citar nomes, reforçando o diferencial local.", gancho:"\"O que a TK Festas tem que a maioria não tem\"", visual:"Arte com 3 ícones: atendimento próximo, região Padroeira, dois formatos de pacote.", legenda:"Proximidade, cuidado e opção que cabe no seu bolso. É assim que a gente faz diferente.", cta:"Chama no direct e sinta a diferença.", tags:["#tkfestas","#diferencial","#osasco","#padroeira","#decoracaodefestas"]},
+{f:"reels", tema:"Depoimento em vídeo (ou reencenação) de cliente satisfeita", obj:"Prova social em formato de maior conversão.", gancho:"\"Ela contratou com medo de não gostar. Olha a reação dela vendo pronto\"", visual:"Filmar reação real da cliente vendo a decoração finalizada (com autorização) ou reconstrução fiel do relato.", legenda:"Esse é o motivo de a gente amar o que faz. Quer viver essa reação também?", cta:"Chama no direct e marca sua data.", tags:["#tkfestas","#depoimento","#osasco","#festadecorada","#reacao"]},
+{f:"carrossel", tema:"Bastidor de uma semana cheia de festas", obj:"Mostrar volume de trabalho e reforçar demanda social (\"todo mundo tá contratando\").", gancho:"Slide 1: \"Como foi nossa semana: 3 festas, 3 histórias diferentes\"", visual:"Slides com fotos de diferentes festas montadas na mesma semana.", legenda:"Semana corrida, mas cada festa vale a pena. Qual dessas você mais gostou?", cta:"Comenta qual decoração você mais curtiu.", tags:["#tkfestas","#semanadetrabalho","#osasco","#decoracaodefestas","#padroeira"]},
+{f:"estatico", tema:"Fechamento de mês: prova social consolidada", obj:"Consolidar resultados do mês e preparar terreno para nova meta.", gancho:"\"Setembro em números: festas realizadas, famílias felizes\"", visual:"Arte estática tipo \"recap\" com colagem de 4 fotos + números do mês.", legenda:"Cada número aqui é uma família que confiou na gente. Obrigada por fazer parte desse mês!", cta:"Chama no direct e faça parte do próximo recap.", tags:["#tkfestas","#recap","#osasco","#padroeira","#festadecorada"]},
+{f:"carrossel", tema:"O que vem por aí: outubro na TK Festas", obj:"Criar antecipação e captar orçamentos para o mês seguinte.", gancho:"Slide 1: \"O que vem por aí em outubro na TK Festas\"", visual:"Slides com prévia de temas de festa sugeridos + chamada de agenda.", legenda:"Outubro promete. Garanta sua data antes que a agenda feche.", cta:"Manda 'OUTUBRO' no direct e garanta sua vaga.", tags:["#tkfestas","#osasco","#agendaaberta","#festadecorada","#padroeira"]},
+{f:"reels", tema:"Recap do mês em Reels dinâmico", obj:"Fechar o ciclo de 30 dias com forte potencial de compartilhamento e reforço de marca.", gancho:"\"30 dias, várias festas, um só objetivo: deixar tudo mais bonito\"", visual:"Compilado rápido de clipes das melhores festas do mês, cortes no beat.", legenda:"Se você chegou até aqui acompanhando, obrigada. Setembro foi só o começo — outubro vem forte.", cta:"Segue a página pra não perder o que vem por aí.", tags:["#tkfestas","#recapdomes","#osasco","#decoracaodefestas","#padroeira"]}
+];
+
+/* Assign correct format label + date (weekday already computed) */
+const fmtLabel = {reels:"Reels", carrossel:"Carrossel", estatico:"Estático"};
+const fmtClass = {reels:"fmt-reels", carrossel:"fmt-carrossel", estatico:"fmt-estatico"};
+
+function renderCalendar(){
+  const wrap = document.getElementById('calendarWrap');
+  wrap.innerHTML = "";
+  let weekOpen = false;
+  calendarDays.forEach((d, idx)=>{
+    const dayNum = idx+1;
+    if(dayNum===1 || dayNum===8 || dayNum===15 || dayNum===22 || dayNum===29){
+      const labelMap = {1:"Semana 1 · Apresentação & Prova Social", 8:"Semana 2 · Educação & Bastidor", 15:"Semana 3 · Comunidade & Economia", 22:"Semana 4 · Objeções & Prova Social", 29:"Fechamento do mês"};
+      const h = document.createElement('div');
+      h.className = "week-label";
+      h.textContent = labelMap[dayNum];
+      wrap.appendChild(h);
+    }
+    const id = "cal_"+dayNum;
+    const card = document.createElement('div');
+    card.className = "day-card";
+    card.id = "card_"+id;
+    card.innerHTML = `
+      <div class="day-head">
+        <span class="day-num">${String(dayNum).padStart(2,'0')}</span>
+        <span class="day-date">${dateLabel(dayNum)}</span>
+        <span class="fmt-tag ${fmtClass[d.f]}">${fmtLabel[d.f]}</span>
+      </div>
+      <div class="day-theme">${d.tema}</div>
+      <div class="day-obj">${d.obj}</div>
+      <div class="day-detail">
+        <div class="full"><label>Gancho / Título</label><p>${d.gancho}</p></div>
+        <div><label>Sugestão visual</label><p>${d.visual}</p></div>
+        <div><label>CTA</label><p>${d.cta}</p></div>
+        <div class="full"><label>Legenda</label><p>${d.legenda}</p></div>
+        <div class="full"><label>Hashtags</label><p>${d.tags.join(' ')}</p></div>
+      </div>
+      <div class="day-foot">
+        <label class="check-wrap"><input type="checkbox" data-id="${id}"> Publicado</label>
+        <span class="xp-tag">+1 atividade</span>
+      </div>`;
+    wrap.appendChild(card);
+  });
+}
+
+/* ---------------- REELS TESTE (90 = 3 x 30 days), generated from pools ---------------- */
+const HOOKS = [
+ "POV: você contratou uma decoração e ela ficou EXATAMENTE como no Pinterest",
+ "Ninguém te conta isso antes de alugar decoração de festa...",
+ "3 coisas que toda mãe do Padroeira pergunta antes de fechar orçamento",
+ "Isso aqui custa menos do que você imagina (mostra o valor)",
+ "Bastidores de uma montagem pegue e monte em 60 segundos",
+ "Ela pediu decoração simples e o resultado foi ISSO",
+ "Se você mora em Osasco, presta atenção nisso",
+ "O erro nº1 que as pessoas cometem ao decorar festa em casa",
+ "Quanto custa decorar uma festa de aniversário em 2026? Te mostro",
+ "A cliente ficou sem reação quando viu a decoração pronta"
+];
+const ANGULOS = ["POV","Antes e depois","Storytime","Educativo / dica rápida","Bastidor de montagem","Depoimento reencenado","Comparação de preço","Erro comum","Dia na vida da equipe","Desafio / trend do momento"];
+const AUDIOS = ["Áudio de transição rápida em alta","Som de voz em alta (storytelling)","Beat de humor/comédia em alta","Áudio emocional/sentimental em alta","Som de \"plot twist\" em alta","Trend de pergunta/enquete","Áudio de suspense (revelação)","Beat de POV em alta","Som viral de antes-e-depois","Trilha instrumental aesthetic em alta"];
+const CTAS = ["Manda 🎉 nos comentários se quer orçamento","Chama no direct e ganha uma dica extra","Salva esse vídeo pra não esquecer","Marca aquela amiga que vai fazer festa","Clica no link da bio e fala com a gente","Comenta 'EU QUERO' que te mando o catálogo","Compartilha com quem tá planejando festa","Segue pra acompanhar os próximos eventos","Manda 'ORÇAMENTO' no WhatsApp","Deixa seu bairro nos comentários"];
+const weekThemeShort = ["Apresentação & Prova Social","Educação & Bastidor","Comunidade & Economia","Objeções & Prova Social","Fechamento do mês"];
+
+function weekTheme(dayNum){
+  if(dayNum<=7) return weekThemeShort[0];
+  if(dayNum<=14) return weekThemeShort[1];
+  if(dayNum<=21) return weekThemeShort[2];
+  if(dayNum<=28) return weekThemeShort[3];
+  return weekThemeShort[4];
+}
+
+function renderReels(){
+  const wrap = document.getElementById('reelsWrap');
+  wrap.innerHTML = "";
+  for(let day=1; day<=30; day++){
+    const block = document.createElement('div');
+    block.className = "reels-day-block";
+    let rowsHtml = `<div class="reel-row" style="background:var(--cream); font-weight:800; font-size:.68rem; text-transform:uppercase; color:var(--brass-dark);">
+        <span></span><span>Gancho</span><span>Ângulo</span><span>Áudio sugerido</span><span>CTA</span><span></span>
+      </div>`;
+    for(let n=0; n<3; n++){
+      const g = (day-1)*3 + n;
+      const hook = HOOKS[g % HOOKS.length];
+      const ang = ANGULOS[(g+3) % ANGULOS.length];
+      const aud = AUDIOS[(g+5) % AUDIOS.length];
+      const cta = CTAS[(g+7) % CTAS.length];
+      const id = "reel_d"+day+"_"+n;
+      rowsHtml += `<div class="reel-row">
+          <span class="reel-num">R${n+1}</span>
+          <span><span class="rlabel">Gancho</span><span class="hook">${hook}</span></span>
+          <span><span class="rlabel">Ângulo</span><span class="muted">${ang}</span></span>
+          <span><span class="rlabel">Áudio</span><span class="muted">${aud}</span></span>
+          <span><span class="rlabel">CTA</span><span class="muted">${cta}</span></span>
+          <span class="check-cell"><input type="checkbox" data-id="${id}"></span>
+        </div>`;
+    }
+    block.innerHTML = `<div class="reels-day-top"><span>Dia ${String(day).padStart(2,'0')} · ${weekTheme(day)}</span><span>3 roteiros</span></div>${rowsHtml}`;
+    wrap.appendChild(block);
+  }
+}
+
+/* ---------------- CHECKBOX BINDING + GAMIFICATION ---------------- */
+const LEVELS = [
+  {min:0, label:"Nível 1 · Plantando a Semente 🌱"},
+  {min:25, label:"Nível 2 · Regando o Crescimento 💧"},
+  {min:50, label:"Nível 3 · Colhendo Resultados 🌸"},
+  {min:75, label:"Nível 4 · Quase Lá 🚀"},
+  {min:100, label:"Nível 5 · Mestre do Conteúdo 🏆"}
+];
+
+function totalCheckboxes(){ return document.querySelectorAll('input[type=checkbox][data-id]').length; }
+
+function updateGameBar(){
+  const boxes = document.querySelectorAll('input[type=checkbox][data-id]');
+  const total = boxes.length;
+  let done = 0;
+  boxes.forEach(b=>{ if(state.done[b.dataset.id]) done++; });
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('statDone').textContent = done;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statPct').textContent = pct+"%";
+  document.getElementById('progressFill').style.width = pct+"%";
+  let level = LEVELS[0];
+  LEVELS.forEach(l=>{ if(pct>=l.min) level = l; });
+  document.getElementById('levelLabel').textContent = level.label;
+}
+
+function applySavedState(){
+  document.querySelectorAll('input[type=checkbox][data-id]').forEach(box=>{
+    const on = !!state.done[box.dataset.id];
+    box.checked = on;
+    const card = document.getElementById('card_'+box.dataset.id);
+    if(card) card.classList.toggle('done', on);
+  });
+  updateGameBar();
+}
+
+function bindCheckboxes(){
+  document.querySelectorAll('input[type=checkbox][data-id]').forEach(box=>{
+    box.addEventListener('change', async ()=>{
+      state.done[box.dataset.id] = box.checked;
+      const card = document.getElementById('card_'+box.dataset.id);
+      if(card) card.classList.toggle('done', box.checked);
+      updateGameBar();
+      await saveProgress();
+    });
+  });
+}
+
+document.getElementById('resetBtn').addEventListener('click', async ()=>{
+  if(!confirm("Zerar todo o progresso salvo?")) return;
+  state = { done: {} };
+  await saveProgress();
+  applySavedState();
+});
+
+(async function init(){
+  renderCalendar();
+  renderReels();
+  await loadProgress();
+  bindCheckboxes();
+  applySavedState();
+})();
+</script>
+
+</body>
+</html>
