@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0a0f">
+<title>Calendário MAV Store · CF Performance Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a26;
+  --brd:rgba(255,255,255,.07);--brd2:rgba(255,255,255,.13);
+  --txt:#f0edf8;--mut:#7a7490;--fnt:#2e2a40;
+  --gld:#c9a84c;--gld2:#e8c96e;--gldf:rgba(201,168,76,.10);
+  --pur:#7c3aed;--pur2:#a78bfa;--purf:rgba(124,58,237,.12);
+  --pnk:#c026d3;--pnkf:rgba(192,38,211,.10);
+  --grn:#22c55e;--grnf:rgba(34,197,94,.10);
+  --amb:#f97316;--ambf:rgba(249,115,22,.10);
+  --blu:#3b82f6;--bluf:rgba(59,130,246,.10);
+  --r:12px;--rs:8px;
+  --bronze:#cd7f32;--silver:#c0c0c0;--gold-a:#ffd700;
+}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6;min-height:100vh;-webkit-text-size-adjust:100%;padding-bottom:env(safe-area-inset-bottom)}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1.5rem;border-bottom:1px solid var(--brd);background:rgba(10,10,15,.96);backdrop-filter:blur(12px);position:sticky;top:0;z-index:99}
+.tbl a{display:flex;align-items:center;gap:.5rem;text-decoration:none}
+.tbl img{height:34px;width:auto;filter:drop-shadow(0 0 6px rgba(124,58,237,.4))}
+.tbl span{font-size:13px;font-weight:500;color:var(--pur2);letter-spacing:.02em}
+.tbr{font-size:11px;color:var(--mut)}
+.tbr a{color:var(--gld);text-decoration:none;font-weight:500}
+.tbr a:hover{color:var(--gld2)}
+
+.hero{max-width:880px;margin:0 auto;padding:2.5rem 1.5rem 1.25rem}
+.eyebrow{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--pur2);margin-bottom:.6rem;font-weight:500}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.75rem,5vw,2.8rem);line-height:1.15;margin-bottom:.45rem}
+.hero h1 em{font-style:italic;color:var(--gld2)}
+.hero p{font-size:13px;color:var(--mut);max-width:500px;line-height:1.65}
+.htags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.65rem}
+.htag{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid var(--brd2);color:var(--mut)}
+
+.stats{max-width:880px;margin:0 auto 1.25rem;padding:0 1.5rem}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--brd);border:1px solid var(--brd);border-radius:var(--r);overflow:hidden}
+.si{background:var(--bg2);padding:.85rem .6rem;text-align:center}
+.sv{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--pur2);display:block;line-height:1}
+.sl{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.07em;margin-top:.2rem;display:block}
+
+.prog-wrap{max-width:880px;margin:0 auto .7rem;padding:0 1.5rem}
+.prog-hd{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--mut);margin-bottom:.4rem}
+.prog-pct{color:var(--pur2);font-weight:500}
+.prog-seal{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px}
+.seal-none{background:var(--fnt);color:var(--mut)}
+.seal-bronze{background:rgba(205,127,50,.15);color:var(--bronze);border:1px solid rgba(205,127,50,.3)}
+.seal-silver{background:rgba(192,192,192,.1);color:var(--silver);border:1px solid rgba(192,192,192,.3)}
+.seal-gold{background:rgba(255,215,0,.1);color:var(--gold-a);border:1px solid rgba(255,215,0,.3)}
+.prog-tr{height:6px;background:var(--fnt);border-radius:3px;overflow:hidden}
+.prog-fi{height:100%;background:linear-gradient(90deg,var(--pur),var(--pur2));border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1);width:0%}
+
+.xprow{max-width:880px;margin:0 auto 1.75rem;padding:0 1.5rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.lvlb{background:var(--purf);border:1px solid var(--pur);border-radius:var(--rs);padding:.3rem .75rem;font-size:11px;font-weight:500;color:var(--pur2);white-space:nowrap;flex-shrink:0}
+.xpt{flex:1;min-width:80px;height:6px;background:var(--fnt);border-radius:3px;overflow:hidden}
+.xpf{height:100%;background:linear-gradient(90deg,var(--pnk),var(--pur2));border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1);width:0%}
+.xpn{font-size:11px;color:var(--mut);white-space:nowrap;flex-shrink:0}
+
+.tabnav{max-width:880px;margin:0 auto;padding:0 1.5rem;border-bottom:1px solid var(--brd)}
+.tabrow{display:flex;overflow-x:auto;scrollbar-width:none}
+.tabrow::-webkit-scrollbar{display:none}
+.tbtn{font-family:'DM Sans',sans-serif;font-size:12px;padding:.6rem .9rem;border:none;background:transparent;color:var(--mut);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;flex-shrink:0}
+.tbtn.on{color:var(--pur2);border-bottom-color:var(--pur);font-weight:500}
+.tbtn:hover{color:var(--txt)}
+
+.tpanel{display:none;max-width:880px;margin:0 auto;padding:1.5rem}
+.tpanel.on{display:block}
+
+.stitle{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--txt);margin-bottom:.9rem;padding-bottom:.45rem;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:.5rem}
+.sh3{font-size:11px;font-weight:500;color:var(--pur2);text-transform:uppercase;letter-spacing:.09em;margin:.85rem 0 .3rem}
+.bp{font-size:13px;color:var(--mut);line-height:1.75;margin-bottom:.45rem}
+.acard{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:1rem 1.1rem;margin-bottom:.6rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.65rem}
+.gi{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:.75rem .95rem}
+.gi h4{font-size:11px;font-weight:500;color:var(--pur2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem}
+.gi ul{padding-left:1.1rem}
+.gi li,.gi p{font-size:12px;color:var(--mut);line-height:1.7}
+.pill{display:inline-block;font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px;margin:2px}
+.pg{background:var(--gldf);color:var(--gld2);border:1px solid rgba(201,168,76,.2)}
+.pp{background:var(--purf);color:var(--pur2);border:1px solid rgba(124,58,237,.2)}
+.pc{background:var(--pnkf);color:#e879f9;border:1px solid rgba(192,38,211,.2)}
+.callout{background:var(--purf);border:1px solid rgba(124,58,237,.2);border-radius:var(--r);padding:.85rem 1.1rem;font-size:13px;color:var(--pur2);line-height:1.65;margin:.65rem 0}
+.biobox{background:var(--bg3);border:1px solid var(--brd2);border-radius:var(--r);padding:.95rem 1.1rem;font-size:13px;color:var(--txt);line-height:1.9;font-style:italic;margin:.45rem 0}
+.objcard{background:var(--bg2);border:1px solid var(--brd);border-left:3px solid var(--pnk);border-radius:var(--r);padding:.75rem .95rem;margin-bottom:.45rem}
+.objcard h4{font-size:12px;font-weight:500;color:#e879f9;margin-bottom:.2rem}
+.objcard p{font-size:12px;color:var(--mut);line-height:1.65}
+.pilar{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:.8rem .95rem;margin-bottom:.45rem;display:flex;gap:.7rem;align-items:flex-start}
+.pico{font-size:1.1rem;flex-shrink:0;margin-top:.1rem}
+.pilar h4{font-size:13px;font-weight:500;color:var(--txt);margin-bottom:.15rem}
+.pilar p{font-size:12px;color:var(--mut);line-height:1.6}
+.fmtg{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-bottom:.55rem}
+.fcard{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--rs);padding:.65rem .85rem}
+.fcard h5{font-size:11px;font-weight:500;color:var(--pur2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.2rem}
+.fcard p{font-size:11px;color:var(--mut);line-height:1.55}
+
+.filts{max-width:880px;margin:0 auto .7rem;padding:0 1.5rem;display:flex;gap:5px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.filts::-webkit-scrollbar{display:none}
+.fbtn{font-size:11px;font-family:'DM Sans',sans-serif;padding:4px 11px;border-radius:20px;border:1px solid var(--brd2);background:transparent;color:var(--mut);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.fbtn:hover{border-color:var(--pur);color:var(--pur2)}
+.fbtn.on{background:var(--purf);border-color:var(--pur);color:var(--pur2);font-weight:500}
+
+.wblk{max-width:880px;margin:0 auto 1.4rem;padding:0 1.5rem}
+.wtitle{font-family:'DM Serif Display',serif;font-size:.92rem;color:var(--txt);margin-bottom:.65rem;padding-bottom:.4rem;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
+.wnum{font-size:10px;font-family:'DM Sans',sans-serif;color:var(--pur2);background:var(--purf);border:1px solid rgba(124,58,237,.2);padding:2px 8px;border-radius:20px;font-weight:500}
+.wcnt{font-size:11px;font-family:'DM Sans',sans-serif;color:var(--mut);margin-left:auto}
+
+.dcard{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);margin-bottom:.4rem;overflow:hidden;transition:border-color .2s,transform .15s}
+.dcard:hover{border-color:var(--brd2);transform:translateY(-1px)}
+.dcard.done{background:var(--bg3);border-color:rgba(34,197,94,.2)}
+.dcard.done .chead{opacity:.75}
+.chead{display:flex;align-items:center;gap:7px;padding:.7rem .95rem;cursor:pointer;user-select:none}
+.chk{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--fnt);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;color:transparent;font-size:11px}
+.chk:hover{border-color:var(--grn)}
+.dcard.done .chk{background:var(--grn);border-color:var(--grn);color:#fff}
+.cinfo{flex:1;min-width:0}
+.cmeta{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:2px}
+.cnum{font-size:11px;font-weight:500;color:var(--mut);min-width:30px}
+.bdg{font-size:9px;font-weight:500;padding:2px 7px;border-radius:20px}
+.breel{background:var(--purf);color:var(--pur2)}
+.bcarr{background:var(--pnkf);color:#e879f9}
+.best{background:var(--bluf);color:#93c5fd}
+.bat{background:rgba(59,130,246,.1);color:#93c5fd}
+.bnu{background:var(--grnf);color:#86efac}
+.bco{background:var(--ambf);color:#fdba74}
+.cgancho{font-size:13px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:460px}
+.dcard.done .cgancho{text-decoration:line-through;color:var(--mut)}
+.chevron{color:var(--mut);font-size:15px;flex-shrink:0;transition:transform .25s;line-height:1}
+.dcard.open .chevron{transform:rotate(180deg)}
+.cbody{display:none;padding:0 .95rem .95rem;border-top:1px solid var(--brd)}
+.dcard.open .cbody{display:block}
+.csec{margin-top:.7rem}
+.clbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--pur2);font-weight:500;margin-bottom:.18rem}
+.ctxt{font-size:12.5px;color:var(--mut);line-height:1.65}
+.ctxt.gs{font-size:13px;color:var(--txt);font-family:'DM Serif Display',serif;font-style:italic}
+.leg{background:var(--bg3);border:1px solid var(--brd);border-radius:var(--rs);padding:.55rem .8rem;font-size:12px;color:var(--mut);line-height:1.8;margin-top:.18rem;white-space:pre-line}
+.slides-box{background:var(--bg3);border:1px solid rgba(124,58,237,.2);border-radius:var(--rs);padding:.6rem .85rem;font-size:12px;color:var(--mut);line-height:1.8;margin-top:.18rem}
+.slide-item{padding:.3rem 0;border-bottom:1px solid var(--brd)}
+.slide-item:last-child{border-bottom:none}
+.slide-num{font-size:10px;font-weight:500;color:var(--pur2);text-transform:uppercase;letter-spacing:.08em}
+.stories-box{background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.15);border-radius:var(--rs);padding:.6rem .85rem;font-size:12px;color:var(--mut);line-height:1.8;margin-top:.18rem}
+.stories-box strong{color:var(--pur2);font-size:11px;text-transform:uppercase;letter-spacing:.07em}
+.ctapill{display:inline-block;margin-top:.5rem;font-size:11px;font-weight:500;color:var(--gld2);background:var(--gldf);border:1px solid rgba(201,168,76,.25);border-radius:20px;padding:3px 10px}
+.vis{border-left:2px solid var(--fnt);padding-left:.55rem;font-size:12px;color:var(--mut);margin-top:.18rem;line-height:1.6}
+
+.achsec{max-width:880px;margin:0 auto;padding:0}
+.achh{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--txt);margin-bottom:.7rem}
+.achgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.45rem}
+.achcard{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--rs);padding:.6rem .75rem;text-align:center;transition:border-color .2s}
+.achcard.un{border-color:rgba(124,58,237,.35);background:var(--purf)}
+.achico{font-size:1.3rem;display:block;margin-bottom:.22rem;filter:grayscale(1);opacity:.22}
+.achcard.un .achico{filter:none;opacity:1}
+.achnm{font-size:10px;font-weight:500;color:var(--mut)}
+.achcard.un .achnm{color:var(--pur2)}
+.achdesc{font-size:9px;color:var(--fnt);margin-top:2px}
+.achcard.un .achdesc{color:var(--mut)}
+
+.toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--bg2);border:1px solid var(--pur);border-radius:var(--r);padding:.8rem 1rem;font-size:12px;color:var(--txt);box-shadow:0 8px 32px rgba(0,0,0,.5);transform:translateY(140%);transition:transform .4s cubic-bezier(.4,0,.2,1);z-index:200;max-width:250px}
+.toast.show{transform:translateY(0)}
+.tttl{font-weight:500;color:var(--pur2);font-size:11px;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
+
+.footer{text-align:center;padding:2rem 1.5rem 3rem;border-top:1px solid var(--brd);max-width:880px;margin:0 auto}
+.flogo{height:52px;width:auto;opacity:.9;filter:drop-shadow(0 0 10px rgba(124,58,237,.35));display:block;margin:0 auto;transition:filter .2s}
+.flogo:hover{filter:drop-shadow(0 0 18px rgba(124,58,237,.6))}
+.fcr{font-size:12px;color:var(--mut);margin-top:.55rem}
+.fcr a{color:var(--gld);text-decoration:none;font-weight:500}
+.fcr a:hover{color:var(--gld2)}
+.fnote{font-size:10px;color:var(--fnt);margin-top:.3rem}
+
+@media(max-width:768px){.sgrid{grid-template-columns:repeat(2,1fr)}.g2,.fmtg{grid-template-columns:1fr}}
+@media(max-width:480px){
+  .hero,.stats,.prog-wrap,.xprow,.tabnav,.tpanel,.filts,.wblk,.achsec{padding-left:1rem;padding-right:1rem}
+  .hero h1{font-size:1.55rem}.sv{font-size:1.4rem}
+  .cgancho{max-width:calc(100vw - 115px);white-space:normal;font-size:12px}
+  .xprow{gap:.35rem}.lvlb{font-size:10px;width:100%;text-align:center}
+  .xpn{width:100%;text-align:right;font-size:10px}.xpt{width:100%;order:3}
+  .achgrid{grid-template-columns:repeat(2,1fr)}
+  .toast{right:.75rem;left:.75rem;max-width:none}
+}
+@media(max-width:360px){.hero h1{font-size:1.3rem}.sv{font-size:1.2rem}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="tbl">
+    <a href="https://www.instagram.com/carolfilippeof" target="_blank">
+      <img src="data:image/png;base64,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" alt="CF Performance Digital">
+      <span>CF Performance Digital</span>
+    </a>
+  </div>
+  <div class="tbr">CF Performance Digital &middot; <a href="https://www.instagram.com/carolfilippeof" target="_blank">@carolfilippeof</a></div>
+</header>
+
+<div class="hero">
+  <p class="eyebrow">Plano Editorial Estratégico · 2026</p>
+  <h1>MAV Store<br><em>Moda Feminina</em></h1>
+  <p>Loja de roupas femininas em São José, SC · Diagnóstico completo + 30 dias de conteúdo estratégico com stories diários.</p>
+  <div class="htags">
+    <span class="htag">Moda Feminina</span>
+    <span class="htag">São José, SC</span>
+    <span class="htag">Presencial + Online</span>
+    <span class="htag">247 seguidores</span>
+    <span class="htag">@use.mavstore</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="sgrid">
+    <div class="si"><span class="sv" id="sd">0</span><span class="sl">Publicados</span></div>
+    <div class="si"><span class="sv" id="sl">30</span><span class="sl">Restantes</span></div>
+    <div class="si"><span class="sv" id="sx">0</span><span class="sl">XP</span></div>
+    <div class="si"><span class="sv" id="ss">0</span><span class="sl">Sequência</span></div>
+  </div>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-hd">
+    <span>Progresso: <span id="pct" class="prog-pct">0%</span> (0/30)</span>
+    <span id="seal" class="prog-seal seal-none">Sem selo</span>
+  </div>
+  <div class="prog-tr"><div class="prog-fi" id="pfi"></div></div>
+</div>
+
+<div class="xprow">
+  <div class="lvlb" id="lvlb">Nível 1 · Iniciante</div>
+  <div class="xpt"><div class="xpf" id="xpf"></div></div>
+  <div class="xpn" id="xpn">0 / 100 XP</div>
+</div>
+
+<nav class="tabnav">
+  <div class="tabrow">
+    <button class="tbtn on" onclick="goTab('diag',this)">📊 Diagnóstico</button>
+    <button class="tbtn" onclick="goTab('pos',this)">🎯 Posicionamento</button>
+    <button class="tbtn" onclick="goTab('ed',this)">✏️ Editorial</button>
+    <button class="tbtn" onclick="goTab('cal',this)">📅 Calendário</button>
+    <button class="tbtn" onclick="goTab('ach',this)">🏆 Conquistas</button>
+  </div>
+</nav>
+
+<!-- DIAGNÓSTICO -->
+<div id="tp-diag" class="tpanel on">
+  <p class="stitle">🔬 PARTE 1: Diagnóstico Brutal do Perfil</p>
+
+  <div class="acard">
+    <p class="sh3">1. Posicionamento Atual</p>
+    <p class="bp">O perfil da MAV Store comunica uma loja de moda feminina básica, com bom gosto visual nas fotos de produto, mas sem posicionamento claro que diferencie da concorrência. Os produtos fotografados têm qualidade e estilo, o que é positivo. O problema está na ausência de uma narrativa de marca: o perfil parece um catálogo de produto, não uma experiência de moda.</p>
+    <p class="bp">A bio faz referência a "atendimento on-line e presencial", mas o link vai para um WhatsApp, não para uma loja ou catálogo estruturado. O handle é @use.mavstore, mas algumas fotos mostram uma marca d'água que parece "VAM Store" por ser um reflexo da câmera no espelho durante a gravação. Mesmo sendo um artefato visual, isso pode gerar confusão em quem não conhece a loja. A solução é garantir que a marca d'água oficial "MAV Store" esteja visível e legível em todo o conteúdo produzido daqui pra frente.</p>
+    <p class="bp">Com apenas 11 posts e 247 seguidores, o perfil está no início. O que se vê hoje é potencial real, com fotos de produto de qualidade e destaques organizados por categoria. Falta transformar isso numa comunicação que venda antes da pessoa chegar na loja ou mandar mensagem.</p>
+  </div>
+
+  <div class="acard">
+    <p class="sh3">2. Pontos Críticos de Bloqueio</p>
+    <ul style="padding-left:1.1rem;font-size:13px;color:var(--mut);line-height:2.1">
+      <li><strong style="color:#e879f9">Atenção à marca d'água nas gravações:</strong> handle @use.mavstore e link "w.app/mavstore" são consistentes, mas fotos tiradas no espelho inverteram a marca d'água e fizeram aparecer "VAM Store" em alguns conteúdos. Isso não é um problema de identidade, mas é um cuidado técnico importante: ao gravar no espelho, usar câmera frontal sem inverter, ou adicionar a marca d'água na edição pós-gravação, garante que "MAV Store" apareça corretamente em todos os frames.</li>
+      <li><strong style="color:#e879f9">Bio sem proposta de valor:</strong> "Seu próximo look favorito está aqui" é genérico e poderia ser de qualquer loja. Não diz o que a MAV tem de diferente, pra qual mulher é, qual estilo entrega.</li>
+      <li><strong style="color:#e879f9">Funil inexistente:</strong> com 11 posts, tudo é produto. Não há conteúdo de identificação (quem é essa mulher), educação (como usar, como combinar) ou comunidade (quem já comprou). Quem chega no perfil não tem razão pra seguir além de ver produto.</li>
+      <li><strong style="color:#e879f9">Stories sem estratégia de conversão:</strong> os stories existem mas sem uma estrutura que leve a pessoa do interesse à compra. Falta gatilho, CTA e sequência lógica.</li>
+      <li><strong style="color:#e879f9">Ausência de prova social:</strong> nenhum depoimento, nenhum cliente usando a peça, nenhuma entrega mostrada. A loja nova precisa ainda mais de prova social do que uma estabelecida.</li>
+    </ul>
+  </div>
+
+  <p class="sh3">3. Dores Visíveis do Público</p>
+  <div class="g2">
+    <div class="gi"><h4>Dores declaradas</h4><ul>
+      <li>Não saber o que combina com o que tem no guarda-roupa</li>
+      <li>Gastar em peça que não usa porque não combina com nada</li>
+      <li>Não encontrar o tamanho certo em loja grande</li>
+      <li>Não saber se a qualidade da peça compensa o preço</li>
+      <li>Dificuldade de comprar online sem provar</li>
+    </ul></div>
+    <div class="gi"><h4>Comportamentos observados</h4><ul>
+      <li>Guarda-roupa cheio mas sensação de "não ter nada pra usar"</li>
+      <li>Comprar por impulso e se arrepender</li>
+      <li>Preferir loja física pra sentir o tecido antes de comprar</li>
+      <li>Buscar referência de look no Instagram antes de ir às compras</li>
+      <li>Pedir opinião de amiga antes de decidir</li>
+    </ul></div>
+  </div>
+
+  <p class="sh3">4. Dores Ocultas</p>
+  <div class="g2">
+    <div class="gi"><ul>
+      <li>Insegurança com o próprio estilo: "não sei se combina comigo"</li>
+      <li>Medo de ser julgada pelo que veste no trabalho ou em eventos</li>
+      <li>Sentir que peças bonitas são pra outros corpos, não pro seu</li>
+      <li>Vergonha de pedir ajuda na loja por não saber o que quer</li>
+    </ul></div>
+    <div class="gi"><ul>
+      <li>Medo de comprar online e receber algo diferente da foto</li>
+      <li>Insegurança sobre devolução e troca em loja nova</li>
+      <li>Pressão pra parecer bem-vestida sem gastar muito</li>
+      <li>Comparação com outras mulheres nas redes sociais</li>
+    </ul></div>
+  </div>
+
+  <p class="sh3">5. Desejos Emocionais</p>
+  <div style="margin:.4rem 0 .7rem">
+    <span class="pill pg">Sentir-se confiante em qualquer situação</span>
+    <span class="pill pg">Ter estilo próprio reconhecível</span>
+    <span class="pill pg">Ser elogiada pelo look</span>
+    <span class="pill pg">Sentir que a roupa "é ela"</span>
+    <span class="pill pg">Comprar com segurança e sem arrependimento</span>
+    <span class="pill pg">Pertencer a um estilo de vida desejado</span>
+  </div>
+
+  <p class="sh3">6. Desejos Práticos</p>
+  <div style="margin:.4rem 0 .7rem">
+    <span class="pill pp">Peças versáteis que servem pra mais de uma ocasião</span>
+    <span class="pill pp">Boa relação custo-benefício</span>
+    <span class="pill pp">Atendimento que ajude na escolha</span>
+    <span class="pill pp">Saber como combinar cada peça</span>
+    <span class="pill pp">Receber em casa com qualidade garantida</span>
+    <span class="pill pp">Guarda-roupa funcional e com estilo</span>
+  </div>
+
+  <p class="sh3">7. Objeções que Seguram a Compra</p>
+  <div class="objcard"><h4>1. "Não conheço essa loja, não sei se é confiável"</h4><p>Loja nova sem histórico público visível. Depoimentos, fotos de clientes e registros de entregas são a única forma de quebrar essa barreira antes do primeiro contato.</p></div>
+  <div class="objcard"><h4>2. "Não sei se o tamanho vai servir"</h4><p>Compra online de roupa sempre carrega esse risco percebido. A loja precisa mostrar a tabela de medidas, dicas de caimento e política de troca de forma clara e recorrente.</p></div>
+  <div class="objcard"><h4>3. "A foto é bonita mas na vida real pode ser diferente"</h4><p>Desconfiança com foto de produto. A solução é mostrar a peça em contexto real: vídeo do tecido, cliente usando, detalhes de acabamento. Isso vale mais que qualquer descrição.</p></div>
+  <div class="objcard"><h4>4. "Está caro pra uma loja que não conheço"</h4><p>O preço precisa de âncora de valor. Mostrar a qualidade da peça, a versatilidade e o custo por uso resolve melhor do que desconto.</p></div>
+  <div class="objcard"><h4>5. "Vou esperar mais um tempo pra ver como a loja se sai"</h4><p>Essa objeção é silenciosa e comum em lojas novas. O único antídoto é gerar conteúdo com consistência: quem aparece toda semana com qualidade ganha confiança antes de qualquer venda.</p></div>
+
+  <div class="acard" style="margin-top:.7rem">
+    <p class="sh3">8. Oportunidade de Mercado</p>
+    <p class="bp">Em São José, SC, a proximidade com Florianópolis cria um mercado consumidor exigente e com poder de compra. A MAV Store tem a oportunidade de ser a referência local de moda feminina acessível com curadoria, uma proposta que grandes marketplaces não conseguem entregar: o olho humano que seleciona o que funciona pra mulher da região.</p>
+    <p class="bp">No online, o diferencial pode ser o atendimento consultivo via WhatsApp: a cliente manda uma foto do guarda-roupa e recebe sugestão de como encaixar a peça nova. Isso cria experiência, não só transação.</p>
+  </div>
+</div>
+
+<!-- POSICIONAMENTO -->
+<div id="tp-pos" class="tpanel">
+  <p class="stitle">🎯 PARTE 2: Posicionamento de Marca</p>
+
+  <div class="acard">
+    <p class="sh3">1. Território de Marca</p>
+    <p class="bp"><strong style="color:var(--pur2)">Resolva o nome primeiro, antes de qualquer outra coisa.</strong> O handle @use.mavstore e o link "w.app/mavstore" já são consistentes com o nome MAV Store. O ponto de atenção está nas gravações feitas no espelho: o reflexo inverte a marca d'água e faz aparecer "VAM Store" no vídeo. Isso é um artefato técnico, não uma inconsistência real de identidade. A solução é simples: gravar sem o espelho ao fundo, usar câmera frontal, ou adicionar a marca d'água na edição depois da gravação para garantir que "MAV Store" apareça sempre legível e no sentido correto.
+
+O reconhecimento de marca toda vez que alguém tenta indicar a loja.</p>
+    <p class="bp">A recomendação é adotar <strong>MAV Store</strong> como o nome único em todos os pontos de contato: handle, marca d'água, link, bio, stories e embalagem. O "use." no handle pode ser mantido como prefixo de moda (@use.mavstore é um handle válido), mas a identidade visual e de comunicação deve sempre usar o nome curto MAV Store.</p>
+    <p class="bp"><strong style="color:var(--pur2)">Território:</strong> curadoria de moda feminina com atendimento consultivo. A MAV Store não vende roupa, ela ajuda a mulher a encontrar o look certo pra ela. Esse posicionamento diferencia de marketplace e de loja sem atendimento.</p>
+  </div>
+
+  <div class="acard">
+    <p class="sh3">2. Nova Bio Estratégica</p>
+    <div class="biobox">
+      MAV Store 🖤 Moda feminina com curadoria<br>
+      São José, SC · Online pra todo o Brasil<br>
+      Peças que combinam com você de verdade<br>
+      Presencial e envio pra todo o Brasil<br>
+      Compre pelo link abaixo 👇
+    </div>
+    <p class="bp" style="font-size:11px;margin-top:.35rem">Mudanças: nome único e claro logo no início, proposta de valor específica ("curadoria"), alcance geográfico, CTA direto. Removida a frase genérica que podia ser de qualquer loja.</p>
+  </div>
+
+  <div class="acard" style="margin-top:.5rem">
+    <p class="sh3">3. Arquétipo de Marca</p>
+    <p class="bp"><strong style="color:var(--pur2)">Principal: Amante</strong>, a marca que cultiva o desejo, o prazer estético e a conexão emocional com a roupa. O Amante faz a cliente sentir que a peça foi feita pra ela.</p>
+    <p class="bp"><strong style="color:var(--pur2)">Secundário: Sábio</strong>, o olhar curatorial que sabe o que funciona, o que combina, o que dura. Esse arquétipo aparece nos carrosséis educativos e nos atendimentos consultivos.</p>
+    <p class="bp"><strong>Como aplicar:</strong> o Amante aparece nas fotos de produto com lighting elegante, nas legendas que falam de sentimento e identidade. O Sábio aparece nos carrosséis de "como combinar", "o que nunca sai de moda", "5 looks com 3 peças".</p>
+  </div>
+
+  <div class="callout">
+    <strong>4. Frase de Posicionamento:</strong><br><br>
+    <span style="font-family:'DM Serif Display',serif;font-size:1.1rem;font-style:italic">"O look certo pra quem você já é."</span>
+  </div>
+</div>
+
+<!-- EDITORIAL -->
+<div id="tp-ed" class="tpanel">
+  <p class="stitle">✏️ PARTE 3: Linha Editorial e Comunicação</p>
+
+  <p class="sh3">1. Pilares de Conteúdo</p>
+  <div class="pilar"><div class="pico">🪞</div><div><h4>Pilar 1: Identificação</h4><p>Conteúdo que espelha a realidade da mulher que a MAV quer alcançar: guarda-roupa cheio sem nada pra usar, insegurança com estilo, look que admira mas não usa. Gera reconhecimento e seguidores novos.</p></div></div>
+  <div class="pilar"><div class="pico">✨</div><div><h4>Pilar 2: Inspiração de Look</h4><p>Looks completos montados com peças da loja, sugestões de combinação, ideias de uso por ocasião. Educa e desperta desejo ao mesmo tempo. Gera salvamento alto.</p></div></div>
+  <div class="pilar"><div class="pico">📚</div><div><h4>Pilar 3: Educação de Moda</h4><p>Como combinar estampas, peças atemporais, guarda-roupa cápsula, regras de acessório. Posiciona a MAV como referência de estilo, não só ponto de venda.</p></div></div>
+  <div class="pilar"><div class="pico">⭐</div><div><h4>Pilar 4: Prova Social</h4><p>Depoimentos, fotos de clientes usando, feedbacks de compra, entregues documentadas. Essencial pra loja nova construir confiança. Toda venda bem-sucedida é material de conteúdo.</p></div></div>
+  <div class="pilar"><div class="pico">🛍️</div><div><h4>Pilar 5: Produto em Destaque</h4><p>Apresentação de peças específicas com detalhe de tecido, cores disponíveis, formas de usar. Direto ao ponto, sem enrolação. Gera consultas e vendas.</p></div></div>
+  <div class="pilar"><div class="pico">💰</div><div><h4>Pilar 6: Oferta e Conversão</h4><p>Novidades da semana, looks prontos pra comprar, urgência real de estoque, atendimento online e presencial. Aparece estrategicamente, não o tempo todo.</p></div></div>
+
+  <p class="sh3" style="margin-top:.9rem">2. Tom por Formato</p>
+  <div class="fmtg">
+    <div class="fcard"><h5>🎬 Reels</h5><p>Cena real do cotidiano da loja, 7 segundos, sem fala. Gancho em texto sobreposto. Música de fundo. Converte pela legenda, não pelo vídeo.</p></div>
+    <div class="fcard"><h5>🖼️ Carrossel</h5><p>Educativo, direto, com texto pronto por slide. Primeiro slide precisa fazer a pessoa querer rolar. Até 10 slides, cada um com uma informação clara.</p></div>
+    <div class="fcard"><h5>📌 Estático</h5><p>Visual de qualidade com produto em destaque ou frase de impacto. Texto sobreposto ou legenda que complementa sem repetir. Direto ao ponto.</p></div>
+    <div class="fcard"><h5>📱 Stories</h5><p>Mais informal, próximo, com enquetes e CTAs. Mostra bastidores, novidades, depoimentos. É onde a relação com a seguidora se constrói no dia a dia.</p></div>
+  </div>
+
+  <p class="sh3" style="margin-top:.7rem">3. Regras de Comunicação</p>
+  <div class="g2">
+    <div class="gi"><h4>✅ Sempre fazer</h4><ul>
+      <li>Usar o nome MAV Store de forma consistente em tudo</li>
+      <li>Mostrar o produto de múltiplos ângulos e com boa iluminação</li>
+      <li>Ter CTA claro em cada post: comentar, salvar, mandar mensagem</li>
+      <li>Documentar cada venda como conteúdo de prova social</li>
+      <li>Responder comentários e directs no mesmo dia</li>
+      <li>Mostrar bastidores da loja com naturalidade nos stories</li>
+    </ul></div>
+    <div class="gi"><h4>❌ Nunca fazer</h4><ul>
+      <li>Publicar conteúdo onde a marca d'água aparece invertida (reflexo de espelho): sempre conferir se "MAV Store" está legível antes de postar</li>
+      <li>Postar foto de produto com iluminação ruim ou fundo bagunçado</li>
+      <li>Usar legenda genérica que poderia ser de qualquer loja</li>
+      <li>Repetir o mesmo tipo de post mais de duas vezes seguidas</li>
+      <li>Prometer prazo de entrega que não pode garantir</li>
+      <li>Ignorar comentário ou mensagem por mais de 24 horas</li>
+    </ul></div>
+  </div>
+
+  <p class="sh3" style="margin-top:.7rem">4. Paleta de Sentimentos por Funil</p>
+  <div class="g2">
+    <div class="gi"><h4>🔝 Topo: Atrair</h4><p>Identificação · "Isso é comigo" · Curiosidade · Leveza · Desejo estético</p></div>
+    <div class="gi"><h4>⚡ Meio: Nutrir</h4><p>Confiança crescente · Pertencimento · "Essa loja entende meu estilo" · Desejo de comprar</p></div>
+    <div class="gi"><h4>💰 Fundo: Converter</h4><p>Urgência suave · Segurança · Prova social · "Vou comprar agora"</p></div>
+    <div class="gi"><h4>🔁 Fidelizar</h4><p>Orgulho do look · Satisfação com a compra · Indicação espontânea · Sentido de comunidade</p></div>
+  </div>
+
+  <div class="callout" style="margin-top:.75rem">
+    <strong>Meta Mensal: Agosto/Setembro 2026:</strong><br>
+    Seguidores: 247 → <strong>600+</strong> com consistência de conteúdo e engajamento ativo ·
+    Primeiras 10 vendas documentadas como prova social ·
+    Alcance médio por post acima de 500 contas até o final do ciclo
+  </div>
+</div>
+
+<!-- CALENDÁRIO -->
+<div id="tp-cal" class="tpanel">
+  <div class="filts">
+    <button class="fbtn on" onclick="filt('all',this)">Todos</button>
+    <button class="fbtn" onclick="filt('reel',this)">Reel</button>
+    <button class="fbtn" onclick="filt('carr',this)">Carrossel</button>
+    <button class="fbtn" onclick="filt('est',this)">Estático</button>
+    <button class="fbtn" onclick="filt('at',this)">Atrair</button>
+    <button class="fbtn" onclick="filt('nu',this)">Nutrir</button>
+    <button class="fbtn" onclick="filt('co',this)">Converter</button>
+    <button class="fbtn" onclick="filt('done',this)">✓ Feitos</button>
+    <button class="fbtn" onclick="filt('pend',this)">Pendentes</button>
+  </div>
+  <div id="calroot"></div>
+</div>
+
+<!-- CONQUISTAS -->
+<div id="tp-ach" class="tpanel">
+  <div class="achsec">
+    <p class="achh">Conquistas desbloqueáveis</p>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:1rem">Bronze: 7 posts · Prata: 15 posts · Ouro: 25 posts</p>
+    <div class="achgrid" id="achgrid"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <img src="data:image/png;base64,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" alt="CF Performance Digital" class="flogo">
+  <div class="fcr">Produzido por CF Performance Digital &middot; <a href="https://www.instagram.com/carolfilippeof" target="_blank">@carolfilippeof</a></div>
+  <div class="fnote">Todos os dados são salvos localmente no seu navegador · 2026</div>
+</footer>
+
+<div class="toast" id="toast">
+  <div class="tttl" id="tttl"></div>
+  <div id="tmsg"></div>
+</div>
+
+<script>var D=[{id:1,wk:1,fmt:"reel",obj:"at",pilar:"Identificação",g:"Você não entra numa loja, você entra num look.",ob:"Despertar identificação com o universo de moda e pertencimento à marca",vi:"Take único, 7s: mão passando pelas araras da loja, peças coloridas em destaque. Sem fala, só música de fundo animada. Gancho em texto sobreposto.",le:"A MAV Store não é só loja de roupa.\nÉ onde você encontra a versão de você que já estava pronta, esperando por uma peça certa.\n\nNovidades chegando. Bora montar o look?",ct:"Comenta aqui: qual estilo você mais usa no dia a dia?",slides:null,st:"📱 Story 1: Bastidor da arara com novidades chegando. Story 2: Enquete: você prefere vestido ou conjunto? Story 3: CTA direto: 'Chega na loja ou compra pelo link da bio'"},
+{id:2,wk:1,fmt:"carr",obj:"at",pilar:"Inspiração de look",g:"5 looks que funcionam do trabalho ao jantar sem trocar de roupa",ob:"Atrair mulheres que precisam de praticidade no dia a dia e encontrar inspiração",vi:"8 slides com fotos dos produtos da loja. Cada look com uma situação diferente.",le:"Roupa boa é aquela que trabalha por você ao longo do dia.\nCada peça aqui foi pensada pra isso: do compromisso de manhã à saída da tarde, sem precisar voltar pra casa.\n\nTem peça que encaixa no seu dia a dia? Chega na loja ou compra pelo link da bio.",ct:"Salva esse post pra montar seu look da semana",slides:["Slide 1: Título do carrossel em destaque","Slide 2: Look 1: Do escritório ao almoço. Foto do produto + texto: 'Leve e elegante pra qualquer hora'","Slide 3: Look 2: Da aula ao mercado. Foto do produto + texto: 'Conforto sem abrir mão do estilo'","Slide 4: Look 3: Do café ao compromisso. Foto + texto: 'Uma peça, duas ocasiões'","Slide 5: Look 4: Do passeio ao jantar. Foto + texto: 'Versátil do começo ao fim'","Slide 6: Look 5: Do casual ao social. Foto + texto: 'Pronta pra qualquer convite'","Slide 7: Dica rápida: 'Troque o tênis pelo salto e o look já mudou completamente'","Slide 8: CTA: 'Chega na MAV Store ou compra pelo link da bio'"],st:"📱 Story 1: Compartilha o carrossel nos stories com caixinha: 'qual foi o seu look favorito?'. Story 2: Responde as caixinhas ao vivo. Story 3: Mostra as peças físicas da loja relacionadas ao carrossel"},
+{id:3,wk:1,fmt:"est",obj:"at",pilar:"Apresentação da marca",g:"MAV Store: moda feminina em São José, SC. Presencial e online.",ob:"Apresentar a loja de forma clara para novos seguidores",vi:"Foto do espaço físico da loja ou da arara de produtos bem organizada. Texto sobreposto com o nome da loja e cidade.",le:"A MAV Store abriu as portas pra te ajudar a encontrar peças que combinam com você de verdade.\n\nAtendimento presencial em São José, SC, e online pra quem prefere comprar no conforto de casa.\n\nNovidades chegam sempre. Segue pra não perder.",ct:"Salva esse post pra lembrar onde nos encontrar",slides:null,st:"📱 Story 1: 'Você sabia que pode comprar pela nossa loja online?' com link direto. Story 2: Foto da loja física com endereço. Story 3: CTA: 'Passa aqui ou fala com a gente'"},
+{id:4,wk:1,fmt:"reel",obj:"at",pilar:"Produto em destaque",g:"Essa peça já vendeu três vezes essa semana.",ob:"Gerar curiosidade e urgência natural em torno de um produto específico",vi:"Take único, 7s: mão segurando ou passando o tecido de uma peça em destaque na arara, câmera próxima. Sem fala, música suave. Gancho em texto na tela.",le:"Tem peça que chega e já vira favorita de quem vê.\n\nEssa é uma delas. Disponível em cores variadas, o estoque é limitado.\n\nQuer saber os detalhes? Manda mensagem ou chega na loja.",ct:"Comenta: qual cor você escolheria?",slides:null,st:"📱 Story 1: Mostra as cores disponíveis da peça. Story 2: Caixinha: 'Qual cor você escolheria?'. Story 3: Responde as participações e mostra o produto de perto"},
+{id:5,wk:1,fmt:"carr",obj:"nu",pilar:"Educação de moda",g:"Como combinar estampas sem errar nunca mais",ob:"Educar o público e gerar salvamento alto",vi:"8 slides com exemplos visuais de combinações certas e erradas de estampas.",le:"Combinar estampas assusta muita gente. Mas tem uma lógica simples por trás disso, e quando você aprende, o guarda-roupa vira outra coisa.\n\nSalva esse carrossel pra ter esse guia sempre à mão.",ct:"Salva esse post e manda pra uma amiga que tem medo de estampa",slides:["Slide 1: 'Como combinar estampas sem erro', título","Slide 2: Regra 1: 'Varie o tamanho das estampas: uma grande, uma pequena'","Slide 3: Regra 2: 'Uma peça estampada + uma lisa sempre funciona'","Slide 4: Regra 3: 'Use a mesma família de cores como base'","Slide 5: Regra 4: 'Listra + floral: combinação clássica que nunca erra'","Slide 6: Regra 5: 'Animal print é neutra. Trata como lisa'","Slide 7: Exemplo de look completo com estampas combinadas corretamente","Slide 8: CTA: 'Precisou de uma peça pra completar o look? A MAV tem.'"],st:"📱 Story 1: Compartilha o carrossel com pergunta: 'você tem medo de estampa?'. Story 2: Mostra uma peça estampada da loja com exemplo de combinação. Story 3: Caixinha: 'me manda seu look e eu sugiro o que combina'"},
+{id:6,wk:1,fmt:"est",obj:"at",pilar:"Produto em destaque",g:"Chegou na loja. Vai sair rápido.",ob:"Criar senso de novidade e urgência para uma peça recém-chegada",vi:"Foto limpa do produto novo, boa iluminação, fundo neutro ou arara da loja. Texto com destaque para a novidade.",le:"Novidade na MAV Store.\n\nSe você estava esperando pra renovar o guarda-roupa, esse é o sinal.\n\nVeja os detalhes pelo link da bio ou manda mensagem pra saber mais.",ct:"Comenta aqui se você quer saber mais sobre essa peça",slides:null,st:"📱 Story 1: Unboxing rápido ou chegada da peça na loja. Story 2: Mostra o produto de todos os ângulos. Story 3: 'Tem interesse? Manda mensagem agora'"},
+{id:7,wk:1,fmt:"reel",obj:"nu",pilar:"Comunidade e bastidores",g:"Por dentro da MAV Store: o que chega toda semana.",ob:"Humanizar a marca e gerar curiosidade sobre as novidades da semana",vi:"Take único, 7s: mãos organizando peças na arara ou dobrando roupas em cima de mesa, ação simples e natural. Sem fala, música animada. Gancho em texto na tela.",le:"A loja muda toda semana.\n\nNovos modelos, novas cores, novas combinações esperando por você.\n\nSe você quer ser a primeira a saber quando chega coisa nova, ativa o sininho aqui no perfil.",ct:"Ativa o sininho pra ser avisada das novidades",slides:null,st:"📱 Story 1: Bastidor rápido da loja com legenda 'novidades chegando'. Story 2: Caixinha: 'o que você quer ver mais aqui na loja?'. Story 3: Responde e mostra peças relacionadas"},
+{id:8,wk:2,fmt:"carr",obj:"at",pilar:"Inspiração de look",g:"Look completo por menos do que você imagina",ob:"Desmistificar que se veste bem é caro e atrair novos clientes",vi:"8 slides mostrando looks completos com peças da MAV Store e o valor de cada peça.",le:"Montar um look bonito não precisa ser complicado nem caro.\n\nCom as peças certas e combinações simples, você sai de casa com estilo sem gastar o que não tem.\n\nTodas as peças disponíveis na MAV Store, presencial e online.",ct:"Salva esse post pra ter referência na hora de montar o look",slides:["Slide 1: 'Look completo por menos do que você imagina'","Slide 2: Look 1 com foto e valor total do conjunto","Slide 3: Look 2 com foto e valor total","Slide 4: Look 3 com foto e valor total","Slide 5: Look 4 com foto e valor total","Slide 6: Dica: 'Uma peça versátil resolve três looks diferentes'","Slide 7: Dica: 'Invista em neutros primeiro, estampas complementam'","Slide 8: CTA: 'Quer montar o seu? A gente ajuda. Manda mensagem ou chega na loja'"],st:"📱 Story 1: Compartilha o carrossel. Story 2: Mostra o look mais barato do carrossel ao vivo. Story 3: 'Qual look você escolheria? Me conta aqui'"},
+{id:9,wk:2,fmt:"reel",obj:"at",pilar:"Produto em destaque",g:"Essa cor vai com tudo. Literalmente.",ob:"Mostrar a versatilidade de uma peça neutra e incentivar a compra",vi:"Take único, 7s: peça neutra (bege, off-white ou preto) sendo combinada rapidamente com diferentes acessórios ou outras roupas na mesa. Sem fala, música leve. Gancho em texto na tela.",le:"Peça neutra é a base de qualquer guarda-roupa funcional.\n\nCom ela você monta look casual, social ou de trabalho, só mudando o que vem junto.\n\nEssa está disponível na MAV Store. Quer saber as cores e tamanhos?",ct:"Manda mensagem pra saber detalhes dessa peça",slides:null,st:"📱 Story 1: Mostra a peça com 3 combinações diferentes em fotos seguidas. Story 2: 'Qual combinação foi sua favorita?' com enquete. Story 3: CTA com link de compra"},
+{id:10,wk:2,fmt:"est",obj:"nu",pilar:"Educação de moda",g:"As peças que nunca saem de moda. Nunca.",ob:"Educar sobre roupas atemporais e guiar decisão de compra consciente",vi:"Foto de peças clássicas da loja: calça reta, blusa básica de qualidade, vestido simples. Composição limpa.",le:"Tendência passa. Peça boa fica.\n\nAlguns modelos se repetem todo ano porque funcionam pra qualquer corpo, qualquer ocasião e qualquer temporada.\n\nSe você quer montar um guarda-roupa que dura, começa por aqui.",ct:"Salva esse post se você está montando seu guarda-roupa cápsula",slides:null,st:"📱 Story 1: 'Você sabe o que é guarda-roupa cápsula?' com caixinha de respostas. Story 2: Explica o conceito em 15 segundos com texto. Story 3: Mostra as peças atemporais disponíveis na loja"},
+{id:11,wk:2,fmt:"reel",obj:"co",pilar:"Prova social",g:"Ela pediu ajuda pra montar um look. Olha o resultado.",ob:"Mostrar o atendimento personalizado como diferencial e gerar desejo",vi:"Take único, 7s: mão entregando sacola da MAV Store ou organizando peças em cima do balcão. Sem fala, música suave. Gancho em texto na tela.",le:"Aqui na MAV Store o atendimento é personalizado.\n\nVocê chega com uma dúvida e sai com um look que funciona de verdade pra você.\n\nPresencial em São José, SC, ou online pelo link da bio.",ct:"Comenta aqui: você prefere ser atendida na loja ou prefere escolher online?",slides:null,st:"📱 Story 1: Bastidor de atendimento na loja (com permissão da cliente se aparecer). Story 2: Depoimento rápido de cliente satisfeita. Story 3: CTA: 'Quer ser atendida assim? Manda mensagem'"},
+{id:12,wk:2,fmt:"carr",obj:"nu",pilar:"Educação de moda",g:"O que seu look diz antes de você abrir a boca",ob:"Gerar identificação e posicionar a loja como parceira de imagem pessoal",vi:"8 slides com frases curtas e fotos de looks que comunicam diferentes personalidades.",le:"A roupa fala. Antes de você.\n\nQuando você veste algo que combina com quem você é, isso aparece na postura, no jeito de andar, na forma como as pessoas te recebem.\n\nA MAV Store está aqui pra te ajudar a encontrar esse look.",ct:"Salva esse post e comenta: qual dos looks representa mais você?",slides:["Slide 1: 'O que seu look diz antes de você falar'","Slide 2: Look clássico + frase: 'Organizada, confiante, preparada'","Slide 3: Look colorido e estampado + frase: 'Criativa, descontraída, original'","Slide 4: Look todo neutro + frase: 'Elegante, discreta, certeira'","Slide 5: Look confortável e prático + frase: 'Objetiva, dinâmica, no ritmo'","Slide 6: Look romantizado com floral + frase: 'Delicada, feminina, atenta aos detalhes'","Slide 7: 'Qual desses você mais usa? Todos têm um lugar certo pra acontecer'","Slide 8: CTA: 'Encontre o seu look na MAV Store'"],st:"📱 Story 1: Enquete: 'qual look te representa mais?'. Story 2: Compartilha o carrossel com a pergunta. Story 3: Mostra peças da loja que combinam com cada perfil"},
+{id:13,wk:2,fmt:"est",obj:"at",pilar:"Produto em destaque",g:"Vestido novo. Chega hoje na loja.",ob:"Anunciar chegada de produto novo com visual de alta qualidade",vi:"Foto do vestido novo com iluminação boa, modelo ou manequim, fundo limpo.",le:"Vestidos que você vai usar mais de uma vez.\n\nEsse chegou hoje na MAV Store. Disponível em tamanhos e cores variados.\n\nQuer mais detalhes? Manda mensagem ou passa na loja.",ct:"Comenta abaixo: qual tamanho você usa?",slides:null,st:"📱 Story 1: Foto do vestido com todos os ângulos. Story 2: 'Tem interesse? Clica no link da bio'. Story 3: Caixinha: 'qual cor você gostaria que tivesse?'"},
+{id:14,wk:2,fmt:"reel",obj:"at",pilar:"Identificação",g:"Quando você acha que não tem nada pra usar e o guarda-roupa está cheio.",ob:"Criar identificação com dor comum e posicionar a MAV como solução",vi:"Take único, 7s: mãos mexendo em gaveta de roupas ou armário semi-aberto, objeto simples do cotidiano. Sem fala, música descontraída. Gancho em texto na tela.",le:"Isso acontece porque o guarda-roupa tem peças demais que não combinam entre si.\n\nO segredo não é ter mais. É ter o que funciona junto.\n\nPrecisando renovar com estratégia? A gente te ajuda a montar os looks certos.",ct:"Você também passa por isso? Comenta aqui",slides:null,st:"📱 Story 1: Enquete: 'você também sente isso?'. Story 2: Dica rápida de como resolver com 3 peças curinga. Story 3: Mostra 3 peças da loja que resolvem esse problema"},
+{id:15,wk:3,fmt:"carr",obj:"co",pilar:"Prova social",g:"Clientes que renovaram o guarda-roupa na MAV Store",ob:"Construir prova social com depoimentos e gerar confiança para compra",vi:"8 slides com fotos de clientes usando peças da loja (com permissão) e depoimentos curtos.",le:"Resultado real de quem já passou pela MAV Store.\n\nCada look aqui é de uma cliente que chegou com uma necessidade e saiu com uma solução.\n\nVocê pode ser a próxima. Chega na loja ou manda mensagem.",ct:"Salva esse post e manda pra uma amiga que precisa renovar o guarda-roupa",slides:["Slide 1: 'O que clientes da MAV Store estão falando'","Slide 2: Foto de cliente 1 + depoimento curto real","Slide 3: Foto de cliente 2 + depoimento curto real","Slide 4: Foto de cliente 3 + depoimento curto real","Slide 5: Foto de cliente 4 + depoimento curto real","Slide 6: 'O que elas têm em comum: encontraram o look certo aqui'","Slide 7: 'Atendimento presencial em São José, SC, ou online'","Slide 8: CTA: 'Manda mensagem pra agendar ou compra pelo link da bio'"],st:"📱 Story 1: Repost do depoimento de uma cliente. Story 2: 'Você também quer aparecer aqui? Manda seu look com a peça da MAV'. Story 3: CTA de compra"},
+{id:16,wk:3,fmt:"reel",obj:"at",pilar:"Produto em destaque",g:"Conjunto que já virou favorito da semana.",ob:"Criar desejo por um produto específico com urgência natural",vi:"Take único, 7s: conjunto dobrado ou pendurado sendo tocado levemente, tecido em destaque. Sem fala, música de fundo. Gancho em texto na tela.",le:"Às vezes uma peça chega e já resolve o look inteiro.\n\nEsse conjunto está disponível na MAV Store em cores e tamanhos limitados.\n\nQuer garantir o seu antes que acabe?",ct:"Manda mensagem pra reservar esse conjunto",slides:null,st:"📱 Story 1: Mostra o conjunto sendo usado ou pendurado. Story 2: 'Cores disponíveis' com fotos em sequência. Story 3: 'Tem interesse? Me manda mensagem aqui'"},
+{id:17,wk:3,fmt:"est",obj:"nu",pilar:"Educação de moda",g:"Como montar 5 looks com 3 peças. Só.",ob:"Mostrar versatilidade das peças e educar sobre custo-benefício do guarda-roupa cápsula",vi:"Flat lay de 3 peças da loja com setas ou numeração mostrando as combinações possíveis.",le:"Três peças bem escolhidas resolvem a semana inteira.\n\nIsso é o que acontece quando você investe em peças que combinam entre si, que têm qualidade e que funcionam pra mais de uma situação.\n\nTodas essas peças estão disponíveis na MAV Store.",ct:"Salva esse post pra usar como referência",slides:null,st:"📱 Story 1: Mostra as 3 peças ao vivo. Story 2: 'Qual combinação foi sua favorita?' com enquete. Story 3: Link de compra direto para essas peças"},
+{id:18,wk:3,fmt:"carr",obj:"at",pilar:"Tendência e inspiração",g:"As tendências de moda que chegaram pra ficar em 2026",ob:"Posicionar a MAV como loja atualizada e referência de moda",vi:"8 slides com fotos de tendências de 2026 e como a MAV Store traduz cada uma delas em produtos.",le:"Moda de verdade não é só seguir tendência. É saber o que combina com você dentro do que está em alta.\n\nA MAV Store traz o que funciona na prática, não só o que está no feed.\n\nVem ver o que chegou de novo.",ct:"Salva esse post e comenta qual tendência você mais curtiu",slides:["Slide 1: 'Tendências de 2026 que chegaram pra ficar'","Slide 2: Tendência 1 (ex: tons terrosos) + como a MAV traduz isso","Slide 3: Tendência 2 (ex: tecidos fluidos) + como a MAV traduz isso","Slide 4: Tendência 3 (ex: conjuntos coordenados) + como a MAV traduz isso","Slide 5: Tendência 4 (ex: maximalismo acessível) + como a MAV traduz isso","Slide 6: Tendência 5 (ex: alfaiataria feminina) + como a MAV traduz isso","Slide 7: 'Tendência boa é aquela que você consegue usar no dia a dia'","Slide 8: CTA: 'Quer ver as peças ao vivo? Chega na loja ou manda mensagem'"],st:"📱 Story 1: Compartilha o carrossel com pergunta sobre tendências. Story 2: Mostra um produto da loja que representa uma das tendências. Story 3: 'Quer saber mais? Manda mensagem'"},
+{id:19,wk:3,fmt:"reel",obj:"nu",pilar:"Bastidores e humanização",g:"Você viu o que acabou de chegar aqui na loja?",ob:"Criar antecipação e curiosidade sobre novas peças",vi:"Take único, 7s: sacolas ou caixas de produto recém-chegado sendo abertas ou organizadas na loja. Sem fala, música animada. Gancho em texto na tela.",le:"Recebimento de novas peças na MAV Store.\n\nQuando chega coisa nova, a gente mostra primeiro aqui. Ativa o sininho pra não perder.\n\nQuer saber o que chegou? Manda mensagem.",ct:"Ativa o sininho e manda mensagem pra ver o que chegou",slides:null,st:"📱 Story 1: Unboxing ao vivo das peças novas. Story 2: Fotos rápidas de cada peça nova. Story 3: 'Tem interesse em alguma? Fala comigo aqui'"},
+{id:20,wk:3,fmt:"est",obj:"co",pilar:"Oferta e conversão",g:"Atendimento online com entrega pra todo o Brasil.",ob:"Informar sobre o atendimento online e ampliar o alcance da loja",vi:"Foto das peças com embalagem ou sacola da loja. Texto com destaque para 'entrega pra todo o Brasil'.",le:"Você não precisa estar em São José, SC, pra comprar na MAV Store.\n\nAtendemos online com envio pra todo o Brasil. Você escolhe pelo link da bio, manda mensagem e a gente cuida do resto.\n\nFácil, rápido e sem sair de casa.",ct:"Manda mensagem pra fazer seu pedido online",slides:null,st:"📱 Story 1: 'Você sabia que entregamos pra todo o Brasil?' com figurinha animada. Story 2: Mostra o processo de embalagem rápido. Story 3: Link direto de compra"},
+{id:21,wk:3,fmt:"reel",obj:"co",pilar:"Prova social",g:"Ela escolheu esse look pra uma ocasião especial. Veja.",ob:"Mostrar cliente real usando peça da loja para gerar prova social e desejo",vi:"Take único, 7s: imagem de cliente (com permissão) usando uma peça da MAV Store em situação real. Ou mão da lojista montando o look da cliente no balcão. Sem fala, música suave. Gancho em texto na tela.",le:"Tem coisa boa em ver uma cliente encontrar o look certo.\n\nEssa é uma das partes favoritas daqui da MAV Store.\n\nVocê também merece encontrar o seu. Chega na loja ou compra online.",ct:"Comenta aqui: qual foi a última vez que você amou o que estava vestindo?",slides:null,st:"📱 Story 1: Repost do look da cliente (com permissão). Story 2: Caixinha: 'me manda foto do seu look favorito'. Story 3: CTA de compra"},
+{id:22,wk:4,fmt:"carr",obj:"nu",pilar:"Educação de moda",g:"Guia de acessórios: como eles mudam qualquer look",ob:"Educar e mostrar que acessório é extensão da roupa, gerando mais vendas complementares",vi:"8 slides com o mesmo look base sendo transformado com acessórios diferentes.",le:"O segredo do look não está só na roupa.\n\nO acessório certo transforma uma peça simples em algo completamente diferente.\n\nSalva esse guia pra usar como referência.",ct:"Salva esse post e comenta qual acessório você mais usa",slides:["Slide 1: 'Como os acessórios mudam qualquer look'","Slide 2: Look base (blusa e calça simples) sem acessório","Slide 3: Mesmo look com brinco grande + resultado: 'apareceu o elegante'","Slide 4: Mesmo look com cinto na cintura + resultado: 'apareceu a silhueta'","Slide 5: Mesmo look com bolsa colorida + resultado: 'apareceu a personalidade'","Slide 6: Mesmo look com lenço + resultado: 'apareceu o estilo'","Slide 7: Dica: 'Um acessório por vez. Mais que isso vira excesso'","Slide 8: CTA: 'Vem ver os acessórios disponíveis na MAV Store'"],st:"📱 Story 1: Mostra os acessórios disponíveis na loja. Story 2: Enquete: 'você usa mais brinco, colar ou cinto?'. Story 3: Dica rápida de combinação"},
+{id:23,wk:4,fmt:"reel",obj:"at",pilar:"Identificação",g:"O look que você queria usar mas achou que não era pra você.",ob:"Quebrar barreira de insegurança com determinado estilo e gerar identificação",vi:"Take único, 7s: peça considerada mais ousada (estampada, colorida ou com corte diferente) sendo passada levemente na arara. Sem fala, música animada. Gancho em texto na tela.",le:"A roupa que você admira no feed mas acha que não te cai bem.\n\nEssa sensação passa quando você experimenta com a combinação certa.\n\nA MAV tem peças que surpreendem quando você coloca no corpo. Vem experimentar.",ct:"Comenta aqui: tem algum estilo que você admira mas nunca teve coragem de usar?",slides:null,st:"📱 Story 1: Enquete: 'você tem estilo favorito que não usa?'. Story 2: Mostra o produto em questão com dica de combinação. Story 3: 'Quer tentar? Manda mensagem'"},
+{id:24,wk:4,fmt:"est",obj:"co",pilar:"Oferta e conversão",g:"Novidades da semana chegaram. Só hoje pro destaque.",ob:"Criar movimento de vendas com novidades reais da semana",vi:"Foto de layout com as peças novas da semana lado a lado. Visual organizado e atraente.",le:"Essa semana chegaram [número] peças novas na MAV Store.\n\nNovos modelos, novas cores e novos tamanhos disponíveis.\n\nVocê encontra tudo pelo link da bio ou presencialmente em São José, SC.",ct:"Manda mensagem pra ver mais detalhes das peças novas",slides:null,st:"📱 Story 1: Mostra cada peça nova em sequência de stories. Story 2: 'Qual foi sua favorita?' com enquete rápida. Story 3: Link de compra direto"},
+{id:25,wk:4,fmt:"carr",obj:"co",pilar:"Oferta e conversão",g:"Looks prontos pra comprar agora. Cada peça disponível na MAV.",ob:"Criar conteúdo direto de conversão com looks completos e peças disponíveis",vi:"8 slides com looks completos montados com peças da loja, cada um com valor e disponibilidade.",le:"Montamos os looks. Você só escolhe qual quer levar.\n\nCada peça disponível na MAV Store, com atendimento online e presencial.\n\nVer mais detalhes é só mandar mensagem ou clicar no link da bio.",ct:"Salva esse post e me fala qual look você vai montar",slides:["Slide 1: 'Looks prontos pra você comprar agora'","Slide 2: Look 1 completo com foto e peças listadas","Slide 3: Look 2 completo com foto e peças listadas","Slide 4: Look 3 completo com foto e peças listadas","Slide 5: Look 4 completo com foto e peças listadas","Slide 6: Look 5 completo com foto e peças listadas","Slide 7: 'Todas as peças disponíveis online e na loja física em São José, SC'","Slide 8: CTA: 'Qual você escolhe? Manda mensagem pra garantir o seu'"],st:"📱 Story 1: Compartilha o carrossel. Story 2: Mostra o look que teve mais interação ao vivo. Story 3: 'Manda mensagem pra garantir seu look hoje'"},
+{id:26,wk:4,fmt:"reel",obj:"co",pilar:"Prova social",g:"Feedback real de quem comprou essa semana.",ob:"Mostrar depoimento de cliente recente e gerar prova social em tempo real",vi:"Take único, 7s: tela de celular com mensagem de cliente elogiando a compra sendo mostrada (screenshot), mão segurando o celular. Sem fala, música leve. Gancho em texto na tela.",le:"Nada melhor do que ver uma cliente satisfeita com a compra.\n\nIsso é o que motiva a MAV Store a continuar trazendo peças com qualidade e cuidado.\n\nVocê também pode ter essa experiência. Chega na loja ou compra pelo link da bio.",ct:"Comenta aqui: você já comprou na MAV Store? Conta sua experiência",slides:null,st:"📱 Story 1: Repost do feedback da cliente. Story 2: 'Quer comprar também? Acessa o link da bio'. Story 3: CTA de conversão direta"},
+{id:27,wk:4,fmt:"est",obj:"at",pilar:"Identificação",g:"Para a mulher que não tem tempo a perder escolhendo o que vestir.",ob:"Identificação com mulher ocupada que precisa de praticidade e estilo",vi:"Foto de peça prática e elegante ao mesmo tempo. Composição clean e direta.",le:"O dia começa corrido e o guarda-roupa precisa responder rápido.\n\nA MAV Store seleciona peças pensando em mulheres que precisam se sentir bem sem gastar tempo demais escolhendo.\n\nPraticidade não é abrir mão do estilo. É ter os dois juntos.",ct:"Você se identificou? Comenta aqui",slides:null,st:"📱 Story 1: Enquete: 'você demora pra escolher o look?'. Story 2: Mostra 3 peças práticas e elegantes da loja. Story 3: 'Essas são as peças que resolvem seu dia'. CTA de compra"},
+{id:28,wk:5,fmt:"carr",obj:"co",pilar:"Prova social",g:"Os looks mais vendidos do mês na MAV Store",ob:"Criar prova social com os produtos de maior saída e estimular compra por popularidade",vi:"8 slides com os produtos mais vendidos do mês com fotos e breve descrição.",le:"Esses foram os looks que mais saíram esse mês na MAV Store.\n\nQuando muita gente escolhe a mesma peça, geralmente tem um motivo bom.\n\nEstão disponíveis pelo link da bio. Corre que o estoque é limitado.",ct:"Salva esse post e me fala qual foi seu favorito",slides:["Slide 1: 'Os looks mais vendidos do mês na MAV Store'","Slide 2: Produto 1 mais vendido com foto e descrição curta","Slide 3: Produto 2 mais vendido com foto e descrição curta","Slide 4: Produto 3 mais vendido com foto e descrição curta","Slide 5: Produto 4 mais vendido com foto e descrição curta","Slide 6: Produto 5 mais vendido com foto e descrição curta","Slide 7: 'O que esses looks têm em comum: qualidade e versatilidade'","Slide 8: CTA: 'Garanta o seu antes que acabe. Link na bio'"],st:"📱 Story 1: Compartilha o carrossel. Story 2: 'Qual foi seu favorito? Me conta aqui'. Story 3: Link direto para os produtos mais vendidos"},
+{id:29,wk:5,fmt:"reel",obj:"co",pilar:"Oferta e conversão",g:"Últimas peças do mês disponíveis. Depois desse lote, muda tudo.",ob:"Urgência real de fim de estoque para gerar conversão imediata",vi:"Take único, 7s: mão passando pelas últimas peças na arara, poucas opções visíveis. Sem fala, música mais animada. Gancho em texto na tela.",le:"Quando o lote acaba, a gente não garante reposição do mesmo modelo.\n\nSe você estava esperando pra comprar, esse é o momento.\n\nManda mensagem ou acessa o link da bio.",ct:"Manda mensagem pra garantir sua peça agora",slides:null,st:"📱 Story 1: 'Últimas unidades de [peça específica]'. Story 2: Mostra o produto e quantidade restante. Story 3: 'Quer garantir? Me chama agora'"},
+{id:30,wk:5,fmt:"est",obj:"co",pilar:"Comunidade e bastidores",g:"Um mês de MAV Store. Obrigada por fazer parte disso.",ob:"Celebrar o mês encerrado, humanizar a marca e preparar o público para o próximo ciclo",vi:"Foto da loja ou da equipe/lojista com expressão genuína e positiva. Texto de agradecimento e olhar para frente.",le:"Um mês de conteúdo, novidades e looks montados com cuidado pra você.\n\nA MAV Store está crescendo junto com quem acredita no que fazemos aqui.\n\nObrigada por seguir, comentar, comprar e indicar. Agora é aguardar o que vem no próximo mês.",ct:"Comenta aqui o que você quer ver mais da MAV Store nos próximos meses",slides:null,st:"📱 Story 1: Retrospectiva rápida do mês com as peças mais elogiadas. Story 2: 'O que vem por aí no próximo mês?' com caixinha de sugestões. Story 3: CTA para seguir e ativar notificações"}];
+var WK={1:"Semana 1: Apresentar e Atrair",2:"Semana 2: Educar e Mostrar Valor",3:"Semana 3: Nutrir e Construir Confiança",4:"Semana 4: Converter e Fidelizar",5:"Fechamento: Celebrar e Renovar"};
+var FL={reel:"Reel",carr:"Carrossel",est:"Estático"};
+var OL={at:"Atrair",nu:"Nutrir",co:"Converter"};
+var XPV={reel:15,carr:20,est:12};
+var LVS=[{m:0,l:"Nível 1 · Iniciante"},{m:100,l:"Nível 2 · Em Progresso"},{m:250,l:"Nível 3 · Consistente"},{m:450,l:"Nível 4 · Estrategista"},{m:700,l:"Nível 5 · MAV Expert"}];
+var ACS=[
+  {id:"f1",ic:"🎯",nm:"Primeira peça",ds:"Publique o primeiro post",ck:function(d){return d>=1;}},
+  {id:"s1",ic:"🌱",nm:"Semana 1 completa",ds:"7 posts publicados",ck:function(d){return d>=7;}},
+  {id:"hf",ic:"⚡",nm:"Metade do caminho",ds:"15 posts publicados",ck:function(d){return d>=15;}},
+  {id:"cv",ic:"💰",nm:"Funil ativo",ds:"5 posts de conversão",ck:function(d,s){return s.cv>=5;}},
+  {id:"st",ic:"🔥",nm:"7 dias seguidos",ds:"Sequência de 7 posts",ck:function(d,s){return s.ms>=7;}},
+  {id:"ca",ic:"🖼️",nm:"Carrossel Master",ds:"5 carrosséis publicados",ck:function(d,s){return s.ca>=5;}},
+  {id:"rl",ic:"🎬",nm:"Reel Creator",ds:"8 reels publicados",ck:function(d,s){return s.rl>=8;}},
+  {id:"fl",ic:"🏆",nm:"Calendário completo",ds:"30 posts publicados",ck:function(d){return d>=30;}}
+];
+
+function gst(){try{return JSON.parse(localStorage.getItem('mav_v1')||'{"done":[]}')}catch(e){return{done:[]}}}
+function sst(s){localStorage.setItem('mav_v1',JSON.stringify(s))}
+function gdn(){return new Set(gst().done)}
+function gsh(){try{return new Set(JSON.parse(localStorage.getItem('mav_ah')||'[]'))}catch(e){return new Set()}}
+function ssh(s){localStorage.setItem('mav_ah',JSON.stringify([...s]))}
+
+function getSeal(dc){
+  if(dc>=25)return{cls:'seal-gold',txt:'Ouro 🥇'};
+  if(dc>=15)return{cls:'seal-silver',txt:'Prata 🥈'};
+  if(dc>=7)return{cls:'seal-bronze',txt:'Bronze 🥉'};
+  return{cls:'seal-none',txt:'Sem selo'};
+}
+
+function cst(){
+  var done=gdn(),xp=0,cv=0,ca=0,ms=0,st=0,rl=0,at=0;
+  for(var i=0;i<D.length;i++){
+    var d=D[i];
+    if(done.has(d.id)){
+      xp+=XPV[d.fmt]||10;
+      if(d.obj==='co')cv++;
+      if(d.obj==='at')at++;
+      if(d.fmt==='carr')ca++;
+      if(d.fmt==='reel')rl++;
+      st++;if(st>ms)ms=st;
+    }else{st=0;}
+  }
+  return{xp:xp,cv:cv,ca:ca,ms:ms,rl:rl,at:at};
+}
+
+function glv(xp){var lv=LVS[0];for(var i=0;i<LVS.length;i++){if(xp>=LVS[i].m)lv=LVS[i];}return lv;}
+
+function upd(){
+  var done=gdn(),total=D.length,dc=done.size,st=cst(),pct=Math.round(dc/total*100);
+  document.getElementById('sd').textContent=dc;
+  document.getElementById('sl').textContent=total-dc;
+  document.getElementById('sx').textContent=st.xp;
+  document.getElementById('ss').textContent=st.ms;
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('pfi').style.width=pct+'%';
+  var seal=getSeal(dc);
+  var sel=document.getElementById('seal');
+  sel.textContent=seal.txt;
+  sel.className='prog-seal '+seal.cls;
+  var lv=glv(st.xp),li=LVS.indexOf(lv),nx=LVS[li+1];
+  var xi=st.xp-lv.m,xfor=(nx?nx.m:lv.m+100)-lv.m,xp2=Math.min(100,Math.round(xi/xfor*100));
+  document.getElementById('lvlb').textContent=lv.l;
+  document.getElementById('xpf').style.width=xp2+'%';
+  document.getElementById('xpn').textContent=st.xp+(nx?' / '+nx.m+' XP':' XP · MAX');
+  for(var i=0;i<D.length;i++){
+    var c=document.getElementById('c'+D[i].id);
+    if(!c)continue;
+    if(done.has(D[i].id))c.classList.add('done');else c.classList.remove('done');
+  }
+  for(var j=0;j<ACS.length;j++){
+    var el=document.getElementById('a'+ACS[j].id);
+    if(!el)continue;
+    if(ACS[j].ck(dc,st))el.classList.add('un');else el.classList.remove('un');
+  }
+}
+
+function togD(id,ev){
+  ev.stopPropagation();
+  var s=gst(),done=new Set(s.done),prev=done.size;
+  if(done.has(id))done.delete(id);else done.add(id);
+  s.done=[...done];sst(s);
+  if(done.size>prev)chkA(done.size,cst());
+  upd();
+}
+
+function chkA(dc,st){
+  var sh=gsh();
+  for(var i=0;i<ACS.length;i++){
+    var a=ACS[i];
+    if(!sh.has(a.id)&&a.ck(dc,st)){sh.add(a.id);ssh(sh);showT(a.ic+' '+a.nm,a.ds);}
+  }
+}
+
+function showT(ttl,msg){
+  var t=document.getElementById('toast');
+  document.getElementById('tttl').textContent=ttl;
+  document.getElementById('tmsg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3500);
+}
+
+function togC(id){document.getElementById('c'+id).classList.toggle('open');}
+
+function goTab(id,btn){
+  document.querySelectorAll('.tpanel').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tbtn').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('tp-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function filt(type,btn){
+  document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  var done=gdn();
+  for(var i=0;i<D.length;i++){
+    var d=D[i],w=document.getElementById('w'+d.id);
+    if(!w)continue;
+    var show=false;
+    if(type==='all')show=true;
+    else if(type==='done')show=done.has(d.id);
+    else if(type==='pend')show=!done.has(d.id);
+    else show=(d.fmt===type||d.obj===type);
+    w.style.display=show?'':'none';
+  }
+  document.querySelectorAll('.wblk').forEach(function(b){
+    var vis=[...b.querySelectorAll('[id^="w"]')].some(function(e){return e.style.display!=='none';});
+    b.style.display=vis?'':'none';
+  });
+}
+
+function buildCal(){
+  var root=document.getElementById('calroot'),h='',cw=null;
+  for(var i=0;i<D.length;i++){
+    var d=D[i];
+    if(d.wk!==cw){
+      if(cw!==null)h+='</div>';
+      cw=d.wk;
+      var wc=D.filter(function(x){return x.wk===d.wk;}).length;
+      h+='<div class="wblk" id="wb'+d.wk+'">'
+        +'<div class="wtitle"><span class="wnum">'+(d.wk===5?'Final':'Sem. '+d.wk)+'</span>'
+        +WK[d.wk]+'<span class="wcnt">'+wc+' dias</span></div>';
+    }
+    var fb=d.fmt==='reel'?'breel':d.fmt==='carr'?'bcarr':'best';
+    var slidesHTML='';
+    if(d.slides){
+      slidesHTML='<div class="csec"><div class="clbl">Slides do Carrossel</div><div class="slides-box">';
+      for(var k=0;k<d.slides.length;k++){
+        slidesHTML+='<div class="slide-item"><span class="slide-num">Slide '+(k+1)+'</span><br>'+d.slides[k]+'</div>';
+      }
+      slidesHTML+='</div></div>';
+    }
+    h+='<div id="w'+d.id+'">'
+      +'<div class="dcard" id="c'+d.id+'">'
+      +'<div class="chead" onclick="togC('+d.id+')">'
+      +'<button class="chk" onclick="togD('+d.id+',event)">&#10003;</button>'
+      +'<div class="cinfo"><div class="cmeta">'
+      +'<span class="cnum">Dia '+d.id+'</span>'
+      +'<span class="bdg '+fb+'">'+FL[d.fmt]+'</span>'
+      +'<span class="bdg b'+d.obj+'">'+OL[d.obj]+'</span>'
+      +'<span class="bdg best" style="background:rgba(255,255,255,.05);color:var(--mut)">'+d.pilar+'</span>'
+      +'</div><div class="cgancho">'+d.g+'</div></div>'
+      +'<span class="chevron">&#8964;</span></div>'
+      +'<div class="cbody">'
+      +'<div class="csec"><div class="clbl">Objetivo estratégico</div><div class="ctxt">'+d.ob+'</div></div>'
+      +'<div class="csec"><div class="clbl">Sugestão visual</div><div class="vis">'+d.vi+'</div></div>'
+      +'<div class="csec"><div class="clbl">Gancho</div><div class="ctxt gs">'+d.g+'</div></div>'
+      +slidesHTML
+      +'<div class="csec"><div class="clbl">Legenda de alta conversão</div><div class="leg">'+d.le+'</div></div>'
+      +'<div class="csec"><div class="clbl">Stories do dia</div><div class="stories-box">'+d.st+'</div></div>'
+      +'<div class="ctapill">CTA: '+d.ct+'</div>'
+      +'</div></div></div>';
+  }
+  if(cw!==null)h+='</div>';
+  root.innerHTML=h;
+}
+
+function buildAch(){
+  document.getElementById('achgrid').innerHTML=ACS.map(function(a){
+    return '<div class="achcard" id="a'+a.id+'"><span class="achico">'+a.ic+'</span>'
+      +'<div class="achnm">'+a.nm+'</div><div class="achdesc">'+a.ds+'</div></div>';
+  }).join('');
+}
+
+buildCal();buildAch();upd();
+</script>
+</body>
+</html>
